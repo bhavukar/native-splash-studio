@@ -68,10 +68,10 @@ export function CustomizationPanel({
       {/* 1. Logo Asset */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+          <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
             Logo Asset
           </span>
-          <span className="text-[11px] font-mono text-zinc-400">
+          <span className="text-[11px] font-mono text-[var(--text-secondary)]">
             {config.logoName}
           </span>
         </div>
@@ -79,7 +79,7 @@ export function CustomizationPanel({
         {/* Minimal Dropzone */}
         <div
           onClick={() => fileInputRef.current?.click()}
-          className="cursor-pointer p-3 rounded-lg border border-dashed border-zinc-800 hover:border-zinc-600 bg-[#121214] hover:bg-zinc-900 transition flex items-center justify-center gap-2.5 text-zinc-400 hover:text-zinc-200"
+          className="cursor-pointer p-3 rounded-lg border border-dashed border-[var(--surface-border)] hover:border-zinc-500 bg-[var(--surface-subtle)] hover:bg-[var(--button-hover)] transition flex items-center justify-center gap-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         >
           <input
             ref={fileInputRef}
@@ -88,7 +88,7 @@ export function CustomizationPanel({
             onChange={handleFileUpload}
             className="hidden"
           />
-          <Upload size={14} className="text-zinc-500" />
+          <Upload size={14} className="text-[var(--text-muted)]" />
           <span className="text-xs">Upload SVG or PNG</span>
         </div>
 
@@ -107,8 +107,8 @@ export function CustomizationPanel({
                 }
                 className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md border text-left transition ${
                   isSelected
-                    ? 'bg-zinc-800 border-zinc-600 text-zinc-200'
-                    : 'bg-[#121214] border-white/[0.04] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900'
+                    ? 'bg-zinc-800 border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-[var(--surface-subtle)] border-[var(--surface-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-zinc-500/50'
                 }`}
               >
                 <div
@@ -123,14 +123,14 @@ export function CustomizationPanel({
       </div>
 
       {/* 2. Colors */}
-      <div className="space-y-3 pt-3 border-t border-white/[0.06]">
-        <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block">
+      <div className="space-y-3 pt-3 border-t border-[var(--surface-border)]">
+        <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
           Colors
         </span>
 
         {/* Accent Color */}
         <div className="flex items-center justify-between">
-          <span className="text-xs text-zinc-400">Logo Tint</span>
+          <span className="text-xs text-[var(--text-secondary)]">Logo Tint</span>
           <div className="flex items-center gap-1.5">
             {ACCENT_PRESETS.map((c) => (
               <button
@@ -138,7 +138,7 @@ export function CustomizationPanel({
                 onClick={() => onChange({ accentColor: c.hex })}
                 className={`w-4 h-4 rounded-full transition ${
                   config.accentColor.toLowerCase() === c.hex.toLowerCase()
-                    ? 'ring-2 ring-offset-2 ring-offset-[#0A0A0C] ring-zinc-400 scale-110'
+                    ? 'ring-2 ring-offset-2 ring-offset-[var(--background)] ring-zinc-500 scale-110'
                     : 'opacity-70 hover:opacity-100'
                 }`}
                 style={{ backgroundColor: c.hex }}
@@ -156,7 +156,7 @@ export function CustomizationPanel({
 
         {/* Background Color */}
         <div className="flex items-center justify-between">
-          <span className="text-xs text-zinc-400">Window Background</span>
+          <span className="text-xs text-[var(--text-secondary)]">Window Background</span>
           <div className="flex items-center gap-1.5">
             {BG_PRESETS.map((b) => (
               <button
@@ -164,7 +164,7 @@ export function CustomizationPanel({
                 onClick={() => onChange({ backgroundColor: b.hex })}
                 className={`w-4 h-4 rounded-full border border-zinc-700 transition ${
                   config.backgroundColor.toLowerCase() === b.hex.toLowerCase()
-                    ? 'ring-2 ring-offset-2 ring-offset-[#0A0A0C] ring-zinc-400 scale-110'
+                    ? 'ring-2 ring-offset-2 ring-offset-[var(--background)] ring-zinc-500 scale-110'
                     : 'opacity-70 hover:opacity-100'
                 }`}
                 style={{ backgroundColor: b.hex }}
@@ -182,16 +182,16 @@ export function CustomizationPanel({
       </div>
 
       {/* 3. Physics & Geometry */}
-      <div className="space-y-3 pt-3 border-t border-white/[0.06]">
-        <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block">
+      <div className="space-y-3 pt-3 border-t border-[var(--surface-border)]">
+        <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
           Parameters
         </span>
 
         {/* Duration */}
         <div>
-          <div className="flex items-center justify-between text-xs text-zinc-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] mb-1">
             <span>Duration</span>
-            <span className="font-mono text-[11px] text-zinc-300">
+            <span className="font-mono text-[11px] text-[var(--text-primary)]">
               {config.durationMs}ms
             </span>
           </div>
@@ -202,15 +202,15 @@ export function CustomizationPanel({
             step="50"
             value={config.durationMs}
             onChange={(e) => onChange({ durationMs: parseInt(e.target.value) })}
-            className="w-full h-1 bg-zinc-800 rounded appearance-none cursor-pointer accent-zinc-300"
+            className="w-full h-1 bg-zinc-700/50 rounded appearance-none cursor-pointer accent-zinc-500"
           />
         </div>
 
         {/* Scale */}
         <div>
-          <div className="flex items-center justify-between text-xs text-zinc-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] mb-1">
             <span>Scale</span>
-            <span className="font-mono text-[11px] text-zinc-300">
+            <span className="font-mono text-[11px] text-[var(--text-primary)]">
               {Math.round(config.logoScale * 100)}%
             </span>
           </div>
@@ -221,19 +221,19 @@ export function CustomizationPanel({
             step="0.05"
             value={config.logoScale}
             onChange={(e) => onChange({ logoScale: parseFloat(e.target.value) })}
-            className="w-full h-1 bg-zinc-800 rounded appearance-none cursor-pointer accent-zinc-300"
+            className="w-full h-1 bg-zinc-700/50 rounded appearance-none cursor-pointer accent-zinc-500"
           />
         </div>
 
         {/* App Title */}
         <div>
-          <span className="text-xs text-zinc-400 block mb-1">App Name</span>
+          <span className="text-xs text-[var(--text-secondary)] block mb-1">App Name</span>
           <input
             type="text"
             value={config.appName}
             placeholder="App Title"
             onChange={(e) => onChange({ appName: e.target.value })}
-            className="w-full bg-[#121214] border border-white/[0.08] rounded-md px-2.5 py-1.5 text-xs text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-zinc-500 transition font-mono"
+            className="w-full bg-[var(--input-bg)] border border-[var(--surface-border)] rounded-md px-2.5 py-1.5 text-xs text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-zinc-500 transition font-mono"
           />
         </div>
       </div>

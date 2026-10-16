@@ -1,8 +1,53 @@
 @import "tailwindcss";
 
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
 :root {
   --background: #09090b;
   --foreground: #d4d4d8;
+  --surface-card: #0e0e11;
+  --surface-subtle: #141417;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --header-bg: rgba(9, 9, 11, 0.85);
+  --text-primary: #ededed;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --input-bg: #121214;
+  --button-hover: rgba(255, 255, 255, 0.06);
+  --accent-btn-bg: #ededed;
+  --accent-btn-text: #09090b;
+}
+
+[data-theme="light"], .light {
+  --background: #f4f4f6;
+  --foreground: #18181b;
+  --surface-card: #ffffff;
+  --surface-subtle: #eaebee;
+  --surface-border: #d4d4d8;
+  --header-bg: rgba(244, 244, 246, 0.85);
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --input-bg: #ffffff;
+  --button-hover: rgba(0, 0, 0, 0.06);
+  --accent-btn-bg: #18181b;
+  --accent-btn-text: #f4f4f6;
+}
+
+[data-theme="dark"], .dark {
+  --background: #09090b;
+  --foreground: #d4d4d8;
+  --surface-card: #0e0e11;
+  --surface-subtle: #141417;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --header-bg: rgba(9, 9, 11, 0.85);
+  --text-primary: #ededed;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --input-bg: #121214;
+  --button-hover: rgba(255, 255, 255, 0.06);
+  --accent-btn-bg: #ededed;
+  --accent-btn-text: #09090b;
 }
 
 @theme inline {
@@ -17,6 +62,7 @@ body {
   color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Custom minimal scrollbar */
@@ -28,9 +74,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(120, 120, 128, 0.2);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(120, 120, 128, 0.35);
 }

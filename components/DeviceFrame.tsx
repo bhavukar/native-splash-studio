@@ -34,13 +34,13 @@ export function DeviceFrame({
       {/* Device Toolbar */}
       <div className="flex items-center gap-2 mb-5">
         {/* Device Switcher */}
-        <div className="flex items-center bg-[#121214] p-0.5 rounded-md border border-white/[0.06]">
+        <div className="flex items-center bg-[var(--surface-subtle)] p-0.5 rounded-md border border-[var(--surface-border)]">
           <button
             onClick={() => onConfigChange({ device: 'iphone' })}
             className={`px-2.5 py-1 rounded text-xs font-medium transition ${
               isIphone
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm'
-                : 'text-zinc-500 hover:text-zinc-300'
+                ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
             iPhone 16 Pro
@@ -49,15 +49,15 @@ export function DeviceFrame({
             onClick={() => onConfigChange({ device: 'pixel' })}
             className={`px-2.5 py-1 rounded text-xs font-medium transition ${
               !isIphone
-                ? 'bg-zinc-800 text-zinc-100 shadow-sm'
-                : 'text-zinc-500 hover:text-zinc-300'
+                ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
             Pixel 9
           </button>
         </div>
 
-        {/* Theme Mode */}
+        {/* Mock Device Theme Mode */}
         <button
           onClick={() =>
             onConfigChange({
@@ -65,9 +65,10 @@ export function DeviceFrame({
               backgroundColor: isDark ? '#FFFFFF' : '#0B0B0E',
             })
           }
-          className="text-xs text-zinc-400 hover:text-zinc-200 px-2.5 py-1 rounded-md bg-[#121214] border border-white/[0.06] hover:bg-zinc-800 transition"
+          className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2.5 py-1 rounded-md bg-[var(--surface-subtle)] border border-[var(--surface-border)] hover:bg-[var(--button-hover)] transition"
+          title="Toggle preview OS mode (Light/Dark)"
         >
-          {isDark ? 'Dark' : 'Light'}
+          OS: {isDark ? 'Dark' : 'Light'}
         </button>
 
         {/* Handoff Preview */}
@@ -79,8 +80,8 @@ export function DeviceFrame({
           }
           className={`text-xs px-2.5 py-1 rounded-md border transition ${
             config.showHomeScreenHandoff
-              ? 'bg-zinc-800 border-zinc-600 text-zinc-200'
-              : 'bg-[#121214] border-white/[0.06] text-zinc-500 hover:text-zinc-300'
+              ? 'bg-zinc-800 border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+              : 'bg-[var(--surface-subtle)] border-[var(--surface-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
           }`}
         >
           Handoff
@@ -91,7 +92,7 @@ export function DeviceFrame({
       <div className="relative select-none">
         {isIphone ? (
           /* iPhone 16 Pro Matte Frame */
-          <div className="relative w-[320px] h-[660px] bg-[#1C1C1E] rounded-[48px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-[#2C2C2E]">
+          <div className="relative w-[320px] h-[660px] bg-[#1C1C1E] rounded-[48px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#2C2C2E]">
             <div className="relative w-full h-full rounded-[40px] overflow-hidden bg-black flex flex-col">
               {/* iOS Status Bar */}
               <div className="absolute top-0 inset-x-0 h-10 z-40 flex items-center justify-between px-6 pt-1 pointer-events-none">
@@ -129,7 +130,7 @@ export function DeviceFrame({
           </div>
         ) : (
           /* Pixel 9 Frame */
-          <div className="relative w-[320px] h-[660px] bg-[#161618] rounded-[40px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-[#27272A]">
+          <div className="relative w-[320px] h-[660px] bg-[#161618] rounded-[40px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#27272A]">
             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black flex flex-col">
               {/* Android Status Bar */}
               <div className="absolute top-0 inset-x-0 h-9 z-40 flex items-center justify-between px-5 pt-1 pointer-events-none">
@@ -158,10 +159,10 @@ export function DeviceFrame({
       </div>
 
       {/* Scrub & Playback Bar */}
-      <div className="w-full max-w-[320px] mt-4 bg-[#121214] border border-white/[0.06] rounded-lg p-2.5">
+      <div className="w-full max-w-[320px] mt-4 bg-[var(--surface-subtle)] border border-[var(--surface-border)] rounded-lg p-2.5">
         {/* Timeline Scrub */}
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] font-mono text-zinc-500 w-12 text-left">
+          <span className="text-[10px] font-mono text-[var(--text-muted)] w-12 text-left">
             {scrubProgress !== null
               ? `${Math.round(scrubProgress * config.durationMs)}ms`
               : 'Live'}
@@ -173,14 +174,14 @@ export function DeviceFrame({
             step="0.01"
             value={scrubProgress ?? 1}
             onChange={(e) => onScrubChange(parseFloat(e.target.value))}
-            className="flex-1 h-1 bg-zinc-800 rounded appearance-none cursor-pointer accent-zinc-400"
+            className="flex-1 h-1 bg-zinc-700/50 rounded appearance-none cursor-pointer accent-zinc-500"
           />
           <button
             onClick={() => onScrubChange(null)}
             className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
               scrubProgress === null
-                ? 'bg-zinc-800 text-zinc-300'
-                : 'text-zinc-600 hover:text-zinc-400'
+                ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
             }`}
           >
             Auto
@@ -188,25 +189,25 @@ export function DeviceFrame({
         </div>
 
         {/* Buttons */}
-        <div className="flex items-center justify-between pt-1.5 border-t border-white/[0.04]">
+        <div className="flex items-center justify-between pt-1.5 border-t border-[var(--surface-border)]">
           <button
             onClick={onReplay}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs transition active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 font-medium text-xs transition active:scale-[0.98]"
           >
             <RotateCcw size={11} />
             <span>Replay</span>
-            <kbd className="text-[9px] font-mono text-zinc-500 ml-1">Space</kbd>
+            <kbd className="text-[9px] font-mono text-zinc-400 ml-1">Space</kbd>
           </button>
 
-          <div className="flex items-center bg-zinc-900 p-0.5 rounded border border-white/[0.04]">
+          <div className="flex items-center bg-[var(--surface-card)] p-0.5 rounded border border-[var(--surface-border)]">
             {[0.5, 1.0, 1.5].map((speed) => (
               <button
                 key={speed}
                 onClick={() => onSpeedChange(speed)}
                 className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition ${
                   playbackSpeed === speed
-                    ? 'bg-zinc-700 text-zinc-100 font-bold'
-                    : 'text-zinc-500 hover:text-zinc-300'
+                    ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-700 dark:text-zinc-100 font-bold'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
                 }`}
               >
                 {speed}x

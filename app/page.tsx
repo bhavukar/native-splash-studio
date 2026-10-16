@@ -27,12 +27,33 @@ export default function StudioPage() {
     showHomeScreenHandoff: false,
   });
 
+  const [pageTheme, setPageTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('native-splash-page-theme') as 'dark' | 'light' | null;
+      if (saved === 'light' || saved === 'dark') return saved;
+    }
+    return 'dark';
+  });
+
   const [activeTab, setActiveTab] = useState<'presets' | 'customize'>('presets');
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [scrubProgress, setScrubProgress] = useState<number | null>(null);
   const [replayNonce, setReplayNonce] = useState<number>(0);
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false);
   const [isWhyNativeOpen, setIsWhyNativeOpen] = useState<boolean>(false);
+
+  // Synchronize document attributes with page theme
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', pageTheme === 'dark');
+    document.documentElement.classList.toggle('light', pageTheme === 'light');
+    document.documentElement.setAttribute('data-theme', pageTheme);
+  }, [pageTheme]);
+
+  const togglePageTheme = () => {
+    const next = pageTheme === 'dark' ? 'light' : 'dark';
+    setPageTheme(next);
+    localStorage.setItem('native-splash-page-theme', next);
+  };
 
   const handleReplay = useCallback(() => {
     setScrubProgress(null);
@@ -65,9 +86,11 @@ export default function StudioPage() {
   }, [handleReplay]);
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-zinc-300 flex flex-col font-sans selection:bg-zinc-800 selection:text-white">
-      {/* Top Navbar */}
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans selection:bg-zinc-700 selection:text-white transition-colors duration-200">
+      {/* Top Navbar with Theme Switcher */}
       <Navbar
+        pageTheme={pageTheme}
+        onToggleTheme={togglePageTheme}
         onOpenExport={() => setIsExportOpen(true)}
         onOpenInfoModal={() => setIsWhyNativeOpen(true)}
       />
@@ -77,13 +100,13 @@ export default function StudioPage() {
         {/* Left Column: Controls (7 Cols) */}
         <div className="lg:col-span-7 space-y-4">
           {/* Tab Switcher */}
-          <div className="flex items-center bg-[#121214] p-1 rounded-lg border border-white/[0.06] w-fit">
+          <div className="flex items-center bg-[var(--surface-subtle)] p-1 rounded-lg border border-[var(--surface-border)] w-fit">
             <button
               onClick={() => setActiveTab('presets')}
               className={`px-3 py-1 rounded text-xs font-medium transition ${
                 activeTab === 'presets'
-                  ? 'bg-zinc-800 text-zinc-100'
-                  : 'text-zinc-500 hover:text-zinc-300'
+                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               Presets
@@ -93,8 +116,8 @@ export default function StudioPage() {
               onClick={() => setActiveTab('customize')}
               className={`px-3 py-1 rounded text-xs font-medium transition ${
                 activeTab === 'customize'
-                  ? 'bg-zinc-800 text-zinc-100'
-                  : 'text-zinc-500 hover:text-zinc-300'
+                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
             >
               Asset & Styling
@@ -102,7 +125,7 @@ export default function StudioPage() {
           </div>
 
           {/* Panel Container */}
-          <div className="bg-[#0E0E11] border border-white/[0.06] rounded-xl p-4 sm:p-5">
+          <div className="bg-[var(--surface-card)] border border-[var(--surface-border)] rounded-xl p-4 sm:p-5 shadow-sm">
             {activeTab === 'presets' ? (
               <PresetSelector
                 selectedId={config.templateId}
