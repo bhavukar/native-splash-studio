@@ -10,6 +10,7 @@ import { PresetSelector } from '../components/PresetSelector';
 import { CustomizationPanel } from '../components/CustomizationPanel';
 import { ExportModal } from '../components/ExportModal';
 import { WhyNativeModal } from '../components/WhyNativeModal';
+import { Sparkles, Sliders, Smartphone } from 'lucide-react';
 
 export default function StudioPage() {
   const [config, setConfig] = useState<StudioConfig>({
@@ -38,7 +39,7 @@ export default function StudioPage() {
     return 'dark';
   });
 
-  const [activeTab, setActiveTab] = useState<'presets' | 'customize'>('presets');
+  const [mobileTab, setMobileTab] = useState<'presets' | 'canvas' | 'inspector'>('canvas');
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [scrubProgress, setScrubProgress] = useState<number | null>(null);
   const [replayNonce, setReplayNonce] = useState<number>(0);
@@ -86,14 +87,18 @@ export default function StudioPage() {
         e.preventDefault();
         handleReplay();
       }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        setIsExportOpen(true);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleReplay]);
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans selection:bg-zinc-700 selection:text-white transition-colors duration-200">
-      {/* Top Navbar with Theme Switcher */}
+    <div className="h-screen w-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans overflow-hidden selection:bg-zinc-700 selection:text-white transition-colors duration-200">
+      {/* Top Navbar */}
       <Navbar
         pageTheme={pageTheme}
         onToggleTheme={togglePageTheme}
@@ -101,56 +106,69 @@ export default function StudioPage() {
         onOpenInfoModal={() => setIsWhyNativeOpen(true)}
       />
 
-      {/* Main Studio Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Controls (7 Cols) */}
-        <div className="lg:col-span-7 space-y-4">
-          {/* Tab Switcher */}
-          <div className="flex items-center bg-[var(--surface-subtle)] p-1 rounded-lg border border-[var(--surface-border)] w-fit">
-            <button
-              onClick={() => setActiveTab('presets')}
-              className={`px-3 py-1 rounded text-xs font-medium transition ${
-                activeTab === 'presets'
-                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Presets
-            </button>
+      {/* Mobile/Tablet View Selector (< lg) */}
+      <div className="lg:hidden flex items-center justify-around border-b border-[var(--surface-border)] bg-[var(--surface-subtle)] px-2 py-1.5 flex-shrink-0">
+        <button
+          onClick={() => setMobileTab('presets')}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+            mobileTab === 'presets'
+              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <Sparkles size={12} />
+          <span>Presets</span>
+        </button>
+        <button
+          onClick={() => setMobileTab('canvas')}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+            mobileTab === 'canvas'
+              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <Smartphone size={12} />
+          <span>Canvas</span>
+        </button>
+        <button
+          onClick={() => setMobileTab('inspector')}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+            mobileTab === 'inspector'
+              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+          }`}
+        >
+          <Sliders size={12} />
+          <span>Inspector</span>
+        </button>
+      </div>
 
-            <button
-              onClick={() => setActiveTab('customize')}
-              className={`px-3 py-1 rounded text-xs font-medium transition ${
-                activeTab === 'customize'
-                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
-                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              Asset & Styling
-            </button>
-          </div>
+      {/* Main Studio 3-Column Workstation */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel: Motion Preset Library (Width: 320px) */}
+        <aside
+          className={`w-full lg:w-80 flex-shrink-0 border-r border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3.5 flex flex-col z-20 ${
+            mobileTab === 'presets' ? 'flex' : 'hidden lg:flex'
+          }`}
+        >
+          <PresetSelector
+            selectedId={config.templateId}
+            onSelect={(id: AnimationTemplateId) => handleConfigChange({ templateId: id })}
+            accentColor={config.accentColor}
+          />
+        </aside>
 
-          {/* Panel Container */}
-          <div className="bg-[var(--surface-card)] border border-[var(--surface-border)] rounded-xl p-4 sm:p-5 shadow-sm">
-            {activeTab === 'presets' ? (
-              <PresetSelector
-                selectedId={config.templateId}
-                onSelect={(id: AnimationTemplateId) =>
-                  handleConfigChange({ templateId: id })
-                }
-                accentColor={config.accentColor}
-              />
-            ) : (
-              <CustomizationPanel
-                config={config}
-                onChange={handleConfigChange}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Right Column: Device Canvas (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col items-center sticky top-20">
+        {/* Center Stage: Studio Canvas Workstation (Flex-1) */}
+        <main
+          className={`flex-1 h-full relative overflow-hidden flex flex-col items-center justify-between p-3 sm:p-5 bg-zinc-950/40 dark:bg-[#070709] ${
+            mobileTab === 'canvas' ? 'flex' : 'hidden lg:flex'
+          }`}
+          style={{
+            backgroundImage:
+              'radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+        >
           <DeviceFrame
             config={config}
             onConfigChange={handleConfigChange}
@@ -161,8 +179,20 @@ export default function StudioPage() {
             scrubProgress={scrubProgress}
             onScrubChange={(p) => setScrubProgress(p)}
           />
-        </div>
-      </main>
+        </main>
+
+        {/* Right Panel: Precision Inspector (Width: 340px) */}
+        <aside
+          className={`w-full lg:w-[340px] flex-shrink-0 border-l border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3.5 flex flex-col z-20 ${
+            mobileTab === 'inspector' ? 'flex' : 'hidden lg:flex'
+          }`}
+        >
+          <CustomizationPanel
+            config={config}
+            onChange={handleConfigChange}
+          />
+        </aside>
+      </div>
 
       {/* Modals */}
       <ExportModal

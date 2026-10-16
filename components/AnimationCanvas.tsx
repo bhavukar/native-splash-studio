@@ -894,6 +894,507 @@ export function AnimationCanvas({
             />
           </div>
         );
+
+      case 'netflix-ribbon':
+        return (
+          <div className="relative flex items-center justify-center [perspective:1000px]">
+            {/* Left Ribbon Shard */}
+            <motion.div
+              key={`ribbon-left-${replayNonce}`}
+              initial={{ rotateY: -70, x: -60, opacity: 0, scaleY: 0.3 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotateY: -70 + scrubProgress * 70,
+                      x: -60 + scrubProgress * 60,
+                      opacity: Math.min(0.85, scrubProgress * 1.8),
+                      scaleY: 0.3 + scrubProgress * 0.7,
+                    }
+                  : {
+                      rotateY: [-70, 0],
+                      x: [-60, 0],
+                      opacity: [0, 0.85, 0],
+                      scaleY: [0.3, 1.0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute w-6 h-36 rounded-full blur-[1px] pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, ${effectiveAccentColor}, transparent)`,
+                boxShadow: `0 0 20px ${effectiveAccentColor}`,
+              }}
+            />
+
+            {/* Right Ribbon Shard */}
+            <motion.div
+              key={`ribbon-right-${replayNonce}`}
+              initial={{ rotateY: 70, x: 60, opacity: 0, scaleY: 0.3 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotateY: 70 - scrubProgress * 70,
+                      x: 60 - scrubProgress * 60,
+                      opacity: Math.min(0.85, scrubProgress * 1.8),
+                      scaleY: 0.3 + scrubProgress * 0.7,
+                    }
+                  : {
+                      rotateY: 70,
+                      x: [60, 0],
+                      opacity: [0, 0.85, 0],
+                      scaleY: [0.3, 1.0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.7, delay: durationSec * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute w-6 h-36 rounded-full blur-[1px] pointer-events-none"
+              style={{
+                background: `linear-gradient(180deg, transparent, ${effectiveAccentColor})`,
+                boxShadow: `0 0 20px ${effectiveAccentColor}`,
+              }}
+            />
+
+            {/* Center Logo Assembly */}
+            <motion.div
+              key={`ribbon-logo-${replayNonce}`}
+              initial={{ scale: 0.4, opacity: 0, filter: 'brightness(2)' }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.4 + scrubProgress * 0.6,
+                      opacity: Math.min(1, scrubProgress * 2.2),
+                      filter: scrubProgress > 0.6 ? 'brightness(1)' : 'brightness(2)',
+                    }
+                  : {
+                      scale: [0.4, 1.08, 1.0],
+                      opacity: [0, 1, 1],
+                      filter: ['brightness(2)', 'brightness(1)'],
+                    }
+              }
+              transition={{ duration: durationSec, delay: durationSec * 0.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-2xl"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'airbnb-breathe':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Soft Organic Pulse Halo */}
+            <motion.div
+              key={`breathe-halo-${replayNonce}`}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.8 + Math.sin(scrubProgress * Math.PI * 2) * 0.25,
+                      opacity: 0.25 + Math.sin(scrubProgress * Math.PI) * 0.2,
+                    }
+                  : {
+                      scale: [0.8, 1.25, 0.95, 1.1, 1.0],
+                      opacity: [0, 0.4, 0.2, 0.35, 0.15],
+                    }
+              }
+              transition={{ duration: durationSec, ease: 'easeInOut' }}
+              className="absolute rounded-full pointer-events-none blur-2xl"
+              style={{
+                width: logoSize * 1.8,
+                height: logoSize * 1.8,
+                backgroundColor: effectiveAccentColor,
+              }}
+            />
+
+            {/* Breathing Logo */}
+            <motion.div
+              key={`breathe-logo-${replayNonce}`}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.85 + Math.sin(scrubProgress * Math.PI) * 0.25 + (scrubProgress > 0.8 ? (scrubProgress - 0.8) * 0.75 : 0),
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      scale: [0.85, 1.12, 0.96, 1.03, 1.0],
+                      opacity: [0, 1, 1, 1, 1],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.34, 1.56, 0.64, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'apple-intelligence':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Iridescent Rainbow Perimeter Aura */}
+            <motion.div
+              key={`ai-halo-${replayNonce}`}
+              initial={{ rotate: 0, scale: 0.7, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotate: scrubProgress * 240,
+                      scale: 0.7 + scrubProgress * 0.45,
+                      opacity: Math.min(0.7, scrubProgress * 1.5),
+                    }
+                  : {
+                      rotate: [0, 240],
+                      scale: [0.7, 1.15],
+                      opacity: [0, 0.7, 0.5],
+                    }
+              }
+              transition={{ duration: durationSec, ease: 'easeOut' }}
+              className="absolute rounded-full pointer-events-none blur-xl"
+              style={{
+                width: logoSize * 1.7,
+                height: logoSize * 1.7,
+                background:
+                  'conic-gradient(from 0deg, #A855F7 0deg, #38BDF8 72deg, #34D399 144deg, #F59E0B 216deg, #EC4899 288deg, #A855F7 360deg)',
+              }}
+            />
+
+            {/* Apple Intelligence Logo */}
+            <motion.div
+              key={`ai-logo-${replayNonce}`}
+              initial={{ scale: 0.82, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.82 + scrubProgress * 0.18,
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      scale: [0.82, 1.0],
+                      opacity: [0, 1],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'spotify-waveform':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Dynamic Equalizer Harmonic Bars */}
+            <div className="absolute inset-0 flex items-center justify-center gap-1.5 pointer-events-none">
+              {[-3, -2, -1, 0, 1, 2, 3].map((pos, idx) => {
+                const heightMult = [0.4, 0.75, 1.2, 1.6, 1.2, 0.75, 0.4][idx];
+                return (
+                  <motion.div
+                    key={`bar-${idx}-${replayNonce}`}
+                    initial={{ scaleY: 0.1, opacity: 0 }}
+                    animate={
+                      scrubProgress !== null
+                        ? {
+                            scaleY:
+                              scrubProgress < 0.7
+                                ? Math.sin((scrubProgress * 8 + idx) * Math.PI) * heightMult + 0.5
+                                : Math.max(0, 1 - (scrubProgress - 0.7) * 3),
+                            opacity:
+                              scrubProgress < 0.75
+                                ? 0.6
+                                : Math.max(0, 1 - (scrubProgress - 0.75) * 4),
+                          }
+                        : {
+                            scaleY: [0.1, heightMult, 0.2, heightMult * 1.2, 0],
+                            opacity: [0, 0.8, 0.8, 0.5, 0],
+                          }
+                    }
+                    transition={{ duration: durationSec * 0.85, ease: 'easeInOut' }}
+                    className="w-1.5 h-20 rounded-full"
+                    style={{ backgroundColor: effectiveAccentColor }}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Central Solid Logo Assembly */}
+            <motion.div
+              key={`waveform-logo-${replayNonce}`}
+              initial={{ scale: 0.3, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: scrubProgress > 0.4 ? Math.min(1.0, (scrubProgress - 0.4) * 1.8 + 0.3) : 0.3,
+                      opacity: scrubProgress > 0.4 ? Math.min(1.0, (scrubProgress - 0.4) * 2.5) : 0,
+                    }
+                  : {
+                      scale: [0.3, 1.1, 1.0],
+                      opacity: [0, 0, 1, 1],
+                    }
+              }
+              transition={{ duration: durationSec, times: [0, 0.4, 0.85, 1], ease: [0.34, 1.56, 0.64, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-lg"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'raycast-superconductor':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* 4 Diagonal Superconductor Beams */}
+            {[
+              { x: -140, y: -140 },
+              { x: 140, y: -140 },
+              { x: -140, y: 140 },
+              { x: 140, y: 140 },
+            ].map((beam, i) => (
+              <motion.div
+                key={`beam-${i}-${replayNonce}`}
+                initial={{ x: beam.x, y: beam.y, opacity: 0, scale: 0.5 }}
+                animate={
+                  scrubProgress !== null
+                    ? {
+                        x: beam.x * (1 - Math.min(1, scrubProgress * 1.6)),
+                        y: beam.y * (1 - Math.min(1, scrubProgress * 1.6)),
+                        opacity: scrubProgress < 0.65 ? 0.9 : Math.max(0, 1 - (scrubProgress - 0.65) * 5),
+                      }
+                    : {
+                        x: [beam.x, 0],
+                        y: [beam.y, 0],
+                        opacity: [0, 1, 0],
+                      }
+                }
+                transition={{ duration: durationSec * 0.55, ease: 'easeIn' }}
+                className="absolute w-2 h-2 rounded-full pointer-events-none"
+                style={{
+                  backgroundColor: effectiveAccentColor,
+                  boxShadow: `0 0 10px 4px ${effectiveAccentColor}`,
+                }}
+              />
+            ))}
+
+            {/* Impact Flash & Snap Logo */}
+            <motion.div
+              key={`raycast-logo-${replayNonce}`}
+              initial={{ scale: 0.1, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale:
+                        scrubProgress < 0.4
+                          ? 0.1
+                          : Math.min(1.0, 0.1 + (scrubProgress - 0.4) * 1.8),
+                      opacity: scrubProgress < 0.4 ? 0 : 1,
+                    }
+                  : {
+                      scale: [0.1, 1.25, 0.98, 1.0],
+                      opacity: [0, 0, 1, 1],
+                    }
+              }
+              transition={{ duration: durationSec, times: [0, 0.45, 0.75, 1], ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-2xl"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'stripe-mesh':
+        return (
+          <div className="relative flex items-center justify-center overflow-hidden">
+            {/* Prismatic Fluid Silk Mesh Wave */}
+            <motion.div
+              key={`mesh-wave-${replayNonce}`}
+              initial={{ x: '-120%', opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: `${-120 + scrubProgress * 240}%`,
+                      opacity: Math.sin(scrubProgress * Math.PI) * 0.6,
+                    }
+                  : {
+                      x: ['-120%', '120%'],
+                      opacity: [0, 0.6, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.9, ease: 'easeInOut' }}
+              className="absolute w-44 h-44 rounded-full pointer-events-none blur-3xl"
+              style={{
+                background: `radial-gradient(circle, ${effectiveAccentColor} 0%, #38BDF8 50%, transparent 80%)`,
+              }}
+            />
+
+            {/* Logo Contour */}
+            <motion.div
+              key={`stripe-logo-${replayNonce}`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      opacity: Math.min(1, scrubProgress * 2),
+                      y: Math.max(0, 15 - scrubProgress * 25),
+                    }
+                  : {
+                      opacity: [0, 1],
+                      y: [15, 0],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-xl"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'linear-orbit':
+        return (
+          <div className="relative flex items-center justify-center [perspective:800px]">
+            {/* 3D Gyroscope Orbital Ring 1 */}
+            <motion.div
+              key={`orbit-1-${replayNonce}`}
+              initial={{ rotateX: 65, rotateZ: 0, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotateX: 65 - scrubProgress * 65,
+                      rotateZ: scrubProgress * 180,
+                      opacity: Math.max(0, 0.6 - scrubProgress * 0.6),
+                    }
+                  : {
+                      rotateX: [65, 0],
+                      rotateZ: [0, 180],
+                      opacity: [0, 0.8, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.8, ease: 'easeOut' }}
+              className="absolute rounded-full border-2 border-dashed pointer-events-none"
+              style={{
+                width: logoSize * 1.5,
+                height: logoSize * 1.5,
+                borderColor: effectiveAccentColor,
+              }}
+            />
+
+            {/* 3D Gyroscope Orbital Ring 2 */}
+            <motion.div
+              key={`orbit-2-${replayNonce}`}
+              initial={{ rotateY: 65, rotateZ: 0, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotateY: 65 - scrubProgress * 65,
+                      rotateZ: -scrubProgress * 180,
+                      opacity: Math.max(0, 0.6 - scrubProgress * 0.6),
+                    }
+                  : {
+                      rotateY: [65, 0],
+                      rotateZ: [0, -180],
+                      opacity: [0, 0.8, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.8, delay: durationSec * 0.1, ease: 'easeOut' }}
+              className="absolute rounded-full border border-dotted pointer-events-none"
+              style={{
+                width: logoSize * 1.35,
+                height: logoSize * 1.35,
+                borderColor: effectiveAccentColor,
+              }}
+            />
+
+            {/* Core Locked Logo */}
+            <motion.div
+              key={`linear-logo-${replayNonce}`}
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.6 + scrubProgress * 0.4,
+                      opacity: Math.min(1, scrubProgress * 1.8),
+                    }
+                  : {
+                      scale: [0.6, 1.0],
+                      opacity: [0, 1],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-xl"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'uber-aperture':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Shutter Blade Aperture Iris */}
+            <motion.div
+              key={`aperture-iris-${replayNonce}`}
+              initial={{ rotate: -90, scale: 0.2, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      rotate: -90 + scrubProgress * 90,
+                      scale: 0.2 + scrubProgress * 0.8,
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      rotate: [-90, 0],
+                      scale: [0.2, 1.0],
+                      opacity: [0, 1],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-2xl"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
+
+      case 'matrix-decrypt':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Scrambled Matrix Hex Characters */}
+            <motion.div
+              key={`decrypt-chars-${replayNonce}`}
+              initial={{ opacity: 1 }}
+              animate={
+                scrubProgress !== null
+                  ? { opacity: Math.max(0, 1 - scrubProgress * 1.6) }
+                  : { opacity: [1, 0.8, 0] }
+              }
+              transition={{ duration: durationSec * 0.6, ease: 'linear' }}
+              className="absolute font-mono text-[10px] tracking-widest pointer-events-none"
+              style={{ color: effectiveAccentColor }}
+            >
+              0x8F9A // DECRYPTING_CONT
+            </motion.div>
+
+            {/* Sharp Resolved Logo */}
+            <motion.div
+              key={`matrix-logo-${replayNonce}`}
+              initial={{ opacity: 0, filter: 'blur(8px)' }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      opacity: Math.min(1, scrubProgress * 2),
+                      filter: scrubProgress > 0.5 ? 'blur(0px)' : 'blur(4px)',
+                    }
+                  : {
+                      opacity: [0, 0.4, 1],
+                      filter: ['blur(8px)', 'blur(0px)'],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{ width: logoSize, height: logoSize, color: effectiveAccentColor }}
+              className="relative z-10 flex items-center justify-center drop-shadow-[0_0_15px_currentColor]"
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
+            />
+          </div>
+        );
     }
   };
 

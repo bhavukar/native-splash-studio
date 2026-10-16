@@ -192,15 +192,55 @@ export function generateIosNative(config: StudioConfig): PlatformExport {
             rippleScale = 2.8
             rippleOpacity = 0.0
         }`;
-  } else if (config.templateId === 'aurora-flare') {
+  } else if (config.templateId === 'netflix-ribbon') {
     animationLogicSwift = `
-        // Aurora Flare with Anamorphic Lens Glide
+        // Netflix Cinematic Ribbon Shard Flow
         withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
             logoScale = 1.0
             logoOpacity = 1.0
         }
-        withAnimation(.linear(duration: 0.75).delay(0.15)) {
-            sheenOffset = 2.0
+        withAnimation(.easeOut(duration: 0.6).delay(0.2)) {
+            bloomScale = 2.5
+            bloomOpacity = 0.0
+        }`;
+  } else if (config.templateId === 'airbnb-breathe') {
+    animationLogicSwift = `
+        // Organic Cardiovascular Breathe & Settle
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.72)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'apple-intelligence') {
+    animationLogicSwift = `
+        // Apple Intelligence Iridescent Edge Refraction
+        withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }
+        withAnimation(.linear(duration: ${durationSec})) {
+            sheenOffset = 3.0
+        }`;
+  } else if (config.templateId === 'spotify-waveform' || config.templateId === 'raycast-superconductor') {
+    animationLogicSwift = `
+        // High Velocity Collider / Waveform Snap
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.6)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'stripe-mesh' || config.templateId === 'linear-orbit') {
+    animationLogicSwift = `
+        // Prismatic Silk Mesh & 3D Gyroscope Settle
+        withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+            rotationY = 0.0
+        }`;
+  } else if (config.templateId === 'uber-aperture' || config.templateId === 'matrix-decrypt') {
+    animationLogicSwift = `
+        // Camera Aperture Unveil / Matrix Decrypt
+        withAnimation(.easeInOut(duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
         }`;
   } else {
     // Apple Iris / Minimal

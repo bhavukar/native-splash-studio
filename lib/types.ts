@@ -36,13 +36,22 @@ export type AnimationTemplateId =
   | 'minimal-strobe'
   | 'cosmic-burst'
   | 'liquid-aperture'
-  | 'aurora-flare';
+  | 'aurora-flare'
+  | 'netflix-ribbon'
+  | 'airbnb-breathe'
+  | 'apple-intelligence'
+  | 'spotify-waveform'
+  | 'raycast-superconductor'
+  | 'stripe-mesh'
+  | 'linear-orbit'
+  | 'uber-aperture'
+  | 'matrix-decrypt';
 
 export interface AnimationTemplate {
   id: AnimationTemplateId;
   name: string;
   tagline: string;
-  category: 'Modern' | 'Minimal' | 'High Energy' | 'Luxury';
+  category: 'Modern' | 'Minimal' | 'High Energy' | 'Luxury' | 'Cinematic';
   defaultDurationMs: number;
   description: string;
   androidInterpolator: string;

@@ -20,8 +20,8 @@ export function Navbar({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--surface-border)] bg-[var(--header-bg)] backdrop-blur-md transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 h-13 flex items-center justify-between">
-        {/* Brand */}
+      <div className="w-full px-4 h-13 flex items-center justify-between">
+        {/* Brand & Studio Engine Status */}
         <div className="flex items-center gap-3">
           <div className="w-7 h-7 rounded-lg bg-[var(--surface-subtle)] border border-[var(--surface-border)] flex items-center justify-center text-[var(--text-secondary)]">
             <Terminal size={14} />
@@ -31,8 +31,13 @@ export function Navbar({
               native-splash
             </span>
             <span className="text-[10px] font-mono text-[var(--text-muted)] border border-[var(--surface-border)] rounded px-1.5 py-0.5">
-              studio
+              studio v2.5
             </span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-1.5 pl-3 border-l border-[var(--surface-border)] text-[10px] font-mono text-[var(--text-muted)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <span>24 Native Motion Engines</span>
           </div>
         </div>
 
@@ -60,17 +65,18 @@ export function Navbar({
 
           <button
             onClick={onOpenInfoModal}
-            className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-3 py-1.5 rounded-md hover:bg-[var(--button-hover)] transition"
+            className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2.5 py-1.5 rounded-md hover:bg-[var(--button-hover)] transition font-medium"
           >
             Architecture
           </button>
 
           <button
             onClick={onOpenExport}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--accent-btn-bg)] hover:opacity-90 text-[var(--accent-btn-text)] font-medium text-xs transition active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--accent-btn-bg)] hover:opacity-90 text-[var(--accent-btn-text)] font-semibold text-xs transition active:scale-[0.98] shadow-sm"
           >
             <Download size={13} />
             <span>Export Code</span>
+            <kbd className="hidden sm:inline text-[9px] font-mono opacity-60 ml-0.5">⌘E</kbd>
           </button>
         </div>
       </div>
