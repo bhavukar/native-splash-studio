@@ -42,19 +42,19 @@ export function AnimationCanvas({
       case 'spring-bloom':
         return (
           <div className="relative flex items-center justify-center">
-            {/* Luminous Bloom Ring */}
+            {/* Ambient Bloom Ring */}
             <motion.div
               key={`bloom-${replayNonce}`}
               initial={{ scale: 0.4, opacity: 0 }}
               animate={
                 scrubProgress !== null
                   ? {
-                      scale: 0.4 + scrubProgress * 2.2,
-                      opacity: Math.max(0, 0.7 - scrubProgress * 0.7),
+                      scale: 0.4 + scrubProgress * 1.8,
+                      opacity: Math.max(0, 0.3 - scrubProgress * 0.3),
                     }
                   : {
-                      scale: [0.4, 1.4, 2.5],
-                      opacity: [0, 0.6, 0],
+                      scale: [0.4, 1.2, 1.8],
+                      opacity: [0, 0.3, 0],
                     }
               }
               transition={{
@@ -63,10 +63,10 @@ export function AnimationCanvas({
               }}
               className="absolute rounded-full pointer-events-none"
               style={{
-                width: logoSize * 1.8,
-                height: logoSize * 1.8,
+                width: logoSize * 1.5,
+                height: logoSize * 1.5,
                 background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
-                filter: 'blur(24px)',
+                filter: 'blur(16px)',
               }}
             />
 
@@ -490,10 +490,10 @@ export function AnimationCanvas({
               <div className="h-20 rounded-xl bg-slate-500/10" />
             </div>
 
-            {/* Status indicator banner */}
-            <div className="py-2 px-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-center">
-              <span className="text-[10px] text-emerald-400 font-mono tracking-wider">
-                ✓ 100% NATIVE HANDOFF COMPLETE
+            {/* Status indicator badge */}
+            <div className="py-1.5 px-3 rounded-md bg-zinc-800/80 border border-white/[0.06] text-center">
+              <span className="text-[10px] text-zinc-400 font-mono tracking-wider">
+                Handoff Complete
               </span>
             </div>
           </motion.div>

@@ -10,7 +10,6 @@ import { PresetSelector } from '../components/PresetSelector';
 import { CustomizationPanel } from '../components/CustomizationPanel';
 import { ExportModal } from '../components/ExportModal';
 import { WhyNativeModal } from '../components/WhyNativeModal';
-import { Sparkles, Sliders } from 'lucide-react';
 
 export default function StudioPage() {
   const [config, setConfig] = useState<StudioConfig>({
@@ -18,8 +17,8 @@ export default function StudioPage() {
     device: 'iphone',
     themeMode: 'dark',
     durationMs: 850,
-    backgroundColor: '#090A0F',
-    accentColor: '#6366F1',
+    backgroundColor: '#09090B',
+    accentColor: '#EDEDED',
     logoScale: 1.0,
     logoSvg: SAMPLE_LOGOS[0].svg,
     logoName: SAMPLE_LOGOS[0].name,
@@ -43,7 +42,6 @@ export default function StudioPage() {
   const handleConfigChange = (updates: Partial<StudioConfig>) => {
     setConfig((prev) => {
       const next = { ...prev, ...updates };
-      // If template changed, update default duration
       if (updates.templateId && updates.templateId !== prev.templateId) {
         const found = ANIMATION_TEMPLATES.find((t) => t.id === updates.templateId);
         if (found) {
@@ -52,11 +50,9 @@ export default function StudioPage() {
       }
       return next;
     });
-    // Trigger replay to show changes immediately
     setReplayNonce((n) => n + 1);
   };
 
-  // Keyboard shortcut: Spacebar to replay animation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space' && (e.target as HTMLElement).tagName !== 'INPUT') {
@@ -69,7 +65,7 @@ export default function StudioPage() {
   }, [handleReplay]);
 
   return (
-    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#09090B] text-zinc-300 flex flex-col font-sans selection:bg-zinc-800 selection:text-white">
       {/* Top Navbar */}
       <Navbar
         onOpenExport={() => setIsExportOpen(true)}
@@ -77,54 +73,36 @@ export default function StudioPage() {
       />
 
       {/* Main Studio Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Configuration & Controls (7 Cols) */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Hero Banner Pill */}
-          <div className="p-4 rounded-3xl bg-gradient-to-r from-blue-900/30 via-indigo-900/20 to-purple-900/30 border border-blue-500/20 backdrop-blur-md">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-blue-300">
-                100% Native Architecture
-              </span>
-            </div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-              Design & Export Native Animated Splash Screens
-            </h1>
-            <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-              No slow Dart or JS runtime delays. Generates hardware-accelerated AnimatedVectorDrawables (AVD) for Android 12+ and Swift 120 FPS handoff for iOS, Flutter, and React Native.
-            </p>
-          </div>
-
-          {/* Tab Switcher for Left Panel */}
-          <div className="flex items-center bg-slate-900/80 p-1 rounded-2xl border border-slate-800">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: Controls (7 Cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          {/* Tab Switcher */}
+          <div className="flex items-center bg-[#121214] p-1 rounded-lg border border-white/[0.06] w-fit">
             <button
               onClick={() => setActiveTab('presets')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold transition ${
+              className={`px-3 py-1 rounded text-xs font-medium transition ${
                 activeTab === 'presets'
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-zinc-800 text-zinc-100'
+                  : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
-              <Sparkles size={14} />
-              <span>1. Animation Presets</span>
+              Presets
             </button>
 
             <button
               onClick={() => setActiveTab('customize')}
-              className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-semibold transition ${
+              className={`px-3 py-1 rounded text-xs font-medium transition ${
                 activeTab === 'customize'
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-zinc-800 text-zinc-100'
+                  : 'text-zinc-500 hover:text-zinc-300'
               }`}
             >
-              <Sliders size={14} />
-              <span>2. Asset & Styling</span>
+              Asset & Styling
             </button>
           </div>
 
-          {/* Studio Panel Body */}
-          <div className="bg-slate-900/60 border border-slate-800/80 rounded-3xl p-5 sm:p-6 shadow-xl backdrop-blur-md">
+          {/* Panel Container */}
+          <div className="bg-[#0E0E11] border border-white/[0.06] rounded-xl p-4 sm:p-5">
             {activeTab === 'presets' ? (
               <PresetSelector
                 selectedId={config.templateId}
@@ -140,37 +118,10 @@ export default function StudioPage() {
               />
             )}
           </div>
-
-          {/* Quick Platform Badges */}
-          <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800/60 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
-            <div className="flex items-center gap-2">
-              <span className="text-slate-200 font-semibold">Zero-Lag Targets:</span>
-              <span className="px-2 py-0.5 rounded-md bg-slate-800 font-mono text-[11px] text-slate-300">
-                Android 12+ (AVD)
-              </span>
-              <span className="px-2 py-0.5 rounded-md bg-slate-800 font-mono text-[11px] text-slate-300">
-                iOS LaunchScreen
-              </span>
-              <span className="px-2 py-0.5 rounded-md bg-slate-800 font-mono text-[11px] text-slate-300">
-                Flutter
-              </span>
-              <span className="px-2 py-0.5 rounded-md bg-slate-800 font-mono text-[11px] text-slate-300">
-                React Native
-              </span>
-            </div>
-
-            <button
-              onClick={() => setIsExportOpen(true)}
-              className="text-blue-400 hover:text-blue-300 font-semibold text-xs flex items-center gap-1"
-            >
-              <span>Export Code</span>
-              <span>→</span>
-            </button>
-          </div>
         </div>
 
-        {/* Right Column: Physical Device Simulator & Preview (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col items-center sticky top-24">
+        {/* Right Column: Device Canvas (5 Cols) */}
+        <div className="lg:col-span-5 flex flex-col items-center sticky top-20">
           <DeviceFrame
             config={config}
             onConfigChange={handleConfigChange}
@@ -184,14 +135,13 @@ export default function StudioPage() {
         </div>
       </main>
 
-      {/* Export & Code Inspection Modal */}
+      {/* Modals */}
       <ExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
         config={config}
       />
 
-      {/* Why Native Educational Modal */}
       <WhyNativeModal
         isOpen={isWhyNativeOpen}
         onClose={() => setIsWhyNativeOpen(false)}

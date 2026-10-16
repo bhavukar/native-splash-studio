@@ -3,7 +3,7 @@
 import React from 'react';
 import { StudioConfig } from '../lib/types';
 import { AnimationCanvas } from './AnimationCanvas';
-import { RotateCcw, Eye } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
 
 interface DeviceFrameProps {
   config: StudioConfig;
@@ -31,114 +31,87 @@ export function DeviceFrame({
 
   return (
     <div className="flex flex-col items-center">
-      {/* Top Device Toolbar */}
-      <div className="flex items-center gap-3 mb-6 bg-slate-900/80 border border-slate-800 rounded-full px-4 py-1.5 shadow-lg backdrop-blur-md">
+      {/* Device Toolbar */}
+      <div className="flex items-center gap-2 mb-5">
         {/* Device Switcher */}
-        <div className="flex items-center bg-slate-800/80 p-0.5 rounded-full border border-slate-700/60">
+        <div className="flex items-center bg-[#121214] p-0.5 rounded-md border border-white/[0.06]">
           <button
             onClick={() => onConfigChange({ device: 'iphone' })}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition ${
               isIphone
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                : 'text-zinc-500 hover:text-zinc-300'
             }`}
           >
             iPhone 16 Pro
           </button>
           <button
             onClick={() => onConfigChange({ device: 'pixel' })}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition ${
               !isIphone
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                : 'text-zinc-500 hover:text-zinc-300'
             }`}
           >
-            Google Pixel 9
+            Pixel 9
           </button>
         </div>
 
-        {/* Separator */}
-        <div className="w-[1px] h-4 bg-slate-800" />
-
-        {/* Theme Mode Switcher */}
+        {/* Theme Mode */}
         <button
           onClick={() =>
             onConfigChange({
               themeMode: isDark ? 'light' : 'dark',
-              backgroundColor: isDark ? '#FFFFFF' : '#0B0F19',
+              backgroundColor: isDark ? '#FFFFFF' : '#0B0B0E',
             })
           }
-          className="flex items-center gap-1.5 text-xs font-medium text-slate-300 hover:text-white px-2.5 py-1 rounded-full bg-slate-800/50 hover:bg-slate-800 transition"
+          className="text-xs text-zinc-400 hover:text-zinc-200 px-2.5 py-1 rounded-md bg-[#121214] border border-white/[0.06] hover:bg-zinc-800 transition"
         >
-          <span className="w-2 h-2 rounded-full" style={{ backgroundColor: isDark ? '#38BDF8' : '#F59E0B' }} />
-          {isDark ? 'Dark Mode' : 'Light Mode'}
+          {isDark ? 'Dark' : 'Light'}
         </button>
 
-        {/* Separator */}
-        <div className="w-[1px] h-4 bg-slate-800" />
-
-        {/* Handoff Preview Toggle */}
+        {/* Handoff Preview */}
         <button
           onClick={() =>
             onConfigChange({
               showHomeScreenHandoff: !config.showHomeScreenHandoff,
             })
           }
-          className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full transition ${
+          className={`text-xs px-2.5 py-1 rounded-md border transition ${
             config.showHomeScreenHandoff
-              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-              : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
+              ? 'bg-zinc-800 border-zinc-600 text-zinc-200'
+              : 'bg-[#121214] border-white/[0.06] text-zinc-500 hover:text-zinc-300'
           }`}
-          title="Simulate seamless cross-dissolve to main app"
         >
-          <Eye size={12} />
-          <span>App Handoff</span>
+          Handoff
         </button>
       </div>
 
-      {/* The Physical Device Mockup */}
-      <div className="relative select-none transition-all duration-300">
-        {/* Glow ambient background aura */}
-        <div
-          className="absolute -inset-4 rounded-[60px] opacity-25 blur-3xl pointer-events-none transition-all duration-500"
-          style={{
-            background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
-          }}
-        />
-
+      {/* Device Frame */}
+      <div className="relative select-none">
         {isIphone ? (
-          /* ================= iPhone 16 Pro Frame ================= */
-          <div className="relative w-[340px] h-[700px] bg-[#222124] rounded-[52px] p-[10px] shadow-[0_25px_70px_rgba(0,0,0,0.8),inset_0_0_4px_rgba(255,255,255,0.4)] border-2 border-[#444247]">
-            {/* Outer Titanium Bezel Accent */}
-            <div className="relative w-full h-full rounded-[44px] overflow-hidden bg-black shadow-inner flex flex-col">
+          /* iPhone 16 Pro Matte Frame */
+          <div className="relative w-[320px] h-[660px] bg-[#1C1C1E] rounded-[48px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-[#2C2C2E]">
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden bg-black flex flex-col">
               {/* iOS Status Bar */}
-              <div className="absolute top-0 inset-x-0 h-11 z-40 flex items-center justify-between px-7 pt-2 pointer-events-none">
-                {/* Time */}
-                <span className="text-[13px] font-semibold tracking-tight text-white/90">
-                  9:41
-                </span>
+              <div className="absolute top-0 inset-x-0 h-10 z-40 flex items-center justify-between px-6 pt-1 pointer-events-none">
+                <span className="text-[12px] font-semibold text-zinc-400">9:41</span>
 
                 {/* Dynamic Island */}
-                <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-[96px] h-[26px] bg-black rounded-full flex items-center justify-between px-2.5 shadow-md">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#111116] border border-white/5" />
-                  <div className="w-2 h-2 rounded-full bg-[#111116] border border-blue-500/20" />
+                <div className="absolute left-1/2 -translate-x-1/2 top-2 w-[84px] h-[22px] bg-black rounded-full flex items-center justify-between px-2">
+                  <div className="w-2 h-2 rounded-full bg-[#111] border border-white/5" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#111]" />
                 </div>
 
-                {/* Right Status Icons */}
-                <div className="flex items-center gap-1.5 text-white/90">
-                  <span className="text-[10px] font-bold tracking-tight">5G</span>
-                  {/* Wi-Fi Icon */}
-                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.6 0 6.9 1.4 9.3 3.7L12 19.3 2.7 11.2C5.1 8.9 8.4 7.5 12 7.5z" />
-                  </svg>
-                  {/* Battery Pill */}
-                  <div className="w-5 h-2.5 rounded-[4px] border border-white/70 p-[1px] flex items-center">
-                    <div className="w-full h-full bg-white rounded-[2px]" />
+                <div className="flex items-center gap-1.5 text-zinc-400">
+                  <span className="text-[10px] font-mono">5G</span>
+                  <div className="w-4 h-2 rounded-[3px] border border-zinc-500 p-[1px]">
+                    <div className="w-full h-full bg-zinc-400 rounded-[1px]" />
                   </div>
                 </div>
               </div>
 
-              {/* Splash Animation Screen Viewport */}
+              {/* Viewport */}
               <div className="relative flex-1 w-full h-full">
                 <AnimationCanvas
                   config={config}
@@ -148,35 +121,24 @@ export function DeviceFrame({
                 />
               </div>
 
-              {/* iOS Home Indicator Bar */}
-              <div className="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none z-40">
-                <div className="w-32 h-1 bg-white/50 rounded-full" />
+              {/* iOS Home Indicator */}
+              <div className="absolute bottom-1 inset-x-0 flex justify-center pointer-events-none z-40">
+                <div className="w-28 h-1 bg-white/30 rounded-full" />
               </div>
             </div>
           </div>
         ) : (
-          /* ================= Google Pixel 9 Frame ================= */
-          <div className="relative w-[340px] h-[700px] bg-[#1a1b1e] rounded-[44px] p-[9px] shadow-[0_25px_70px_rgba(0,0,0,0.8),inset_0_0_3px_rgba(255,255,255,0.3)] border-2 border-[#373940]">
-            <div className="relative w-full h-full rounded-[36px] overflow-hidden bg-black shadow-inner flex flex-col">
+          /* Pixel 9 Frame */
+          <div className="relative w-[320px] h-[660px] bg-[#161618] rounded-[40px] p-[8px] shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-[#27272A]">
+            <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black flex flex-col">
               {/* Android Status Bar */}
-              <div className="absolute top-0 inset-x-0 h-10 z-40 flex items-center justify-between px-6 pt-1 pointer-events-none">
-                {/* Android Clock */}
-                <span className="text-[12px] font-medium text-white/90">
-                  09:41
-                </span>
-
-                {/* Centered Camera Punch Hole */}
-                <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-3.5 h-3.5 rounded-full bg-[#0a0a0d] border border-white/10" />
-
-                {/* Android Icons */}
-                <div className="flex items-center gap-1.5 text-white/90">
-                  <span className="text-[10px] font-mono">LTE</span>
-                  <div className="w-3.5 h-3.5 border-b-2 border-r-2 border-white/80 rotate-45 scale-75" />
-                  <span className="text-[10px] font-medium">100%</span>
-                </div>
+              <div className="absolute top-0 inset-x-0 h-9 z-40 flex items-center justify-between px-5 pt-1 pointer-events-none">
+                <span className="text-[11px] font-mono text-zinc-400">09:41</span>
+                <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-3 h-3 rounded-full bg-[#0a0a0d] border border-white/10" />
+                <span className="text-[10px] font-mono text-zinc-400">100%</span>
               </div>
 
-              {/* Splash Animation Viewport */}
+              {/* Viewport */}
               <div className="relative flex-1 w-full h-full">
                 <AnimationCanvas
                   config={config}
@@ -187,22 +149,22 @@ export function DeviceFrame({
               </div>
 
               {/* Android Gesture Bar */}
-              <div className="absolute bottom-2 inset-x-0 flex justify-center pointer-events-none z-40">
-                <div className="w-20 h-1 bg-white/60 rounded-full" />
+              <div className="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none z-40">
+                <div className="w-18 h-1 bg-white/40 rounded-full" />
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Media Playback & Timeline Controls */}
-      <div className="w-full max-w-[340px] mt-6 bg-slate-900/90 border border-slate-800 rounded-2xl p-3 shadow-xl backdrop-blur-md">
-        {/* Timeline Scrub Slider */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[10px] font-mono text-slate-400 w-8">
+      {/* Scrub & Playback Bar */}
+      <div className="w-full max-w-[320px] mt-4 bg-[#121214] border border-white/[0.06] rounded-lg p-2.5">
+        {/* Timeline Scrub */}
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-mono text-zinc-500 w-12 text-left">
             {scrubProgress !== null
               ? `${Math.round(scrubProgress * config.durationMs)}ms`
-              : 'LIVE'}
+              : 'Live'}
           </span>
           <input
             type="range"
@@ -211,42 +173,40 @@ export function DeviceFrame({
             step="0.01"
             value={scrubProgress ?? 1}
             onChange={(e) => onScrubChange(parseFloat(e.target.value))}
-            className="flex-1 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            className="flex-1 h-1 bg-zinc-800 rounded appearance-none cursor-pointer accent-zinc-400"
           />
           <button
             onClick={() => onScrubChange(null)}
             className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
               scrubProgress === null
-                ? 'bg-blue-600/30 text-blue-400'
-                : 'text-slate-500 hover:text-slate-300'
+                ? 'bg-zinc-800 text-zinc-300'
+                : 'text-zinc-600 hover:text-zinc-400'
             }`}
-            title="Resume Live Animation"
           >
             Auto
           </button>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
-          {/* Replay Button */}
+        {/* Buttons */}
+        <div className="flex items-center justify-between pt-1.5 border-t border-white/[0.04]">
           <button
             onClick={onReplay}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs shadow-md shadow-blue-600/30 transition active:scale-95"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs transition active:scale-[0.98]"
           >
-            <RotateCcw size={13} />
-            <span>Replay (Space)</span>
+            <RotateCcw size={11} />
+            <span>Replay</span>
+            <kbd className="text-[9px] font-mono text-zinc-500 ml-1">Space</kbd>
           </button>
 
-          {/* Speed Controls */}
-          <div className="flex items-center bg-slate-800/70 p-0.5 rounded-lg border border-slate-700/50">
+          <div className="flex items-center bg-zinc-900 p-0.5 rounded border border-white/[0.04]">
             {[0.5, 1.0, 1.5].map((speed) => (
               <button
                 key={speed}
                 onClick={() => onSpeedChange(speed)}
-                className={`px-2 py-1 rounded text-[11px] font-mono transition ${
+                className={`px-1.5 py-0.5 rounded text-[10px] font-mono transition ${
                   playbackSpeed === speed
-                    ? 'bg-slate-700 text-white font-bold'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-zinc-700 text-zinc-100 font-bold'
+                    : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >
                 {speed}x
