@@ -8,7 +8,13 @@ export type AnimationTemplateId =
   | 'apple-iris'
   | 'sheen-3d'
   | 'liquid-ripple'
-  | 'neon-pulse';
+  | 'neon-pulse'
+  | 'elastic-morph'
+  | 'split-converge'
+  | 'glitch-velocity'
+  | 'radar-sweep'
+  | 'depth-parallax'
+  | 'minimal-strobe';
 
 export interface AnimationTemplate {
   id: AnimationTemplateId;

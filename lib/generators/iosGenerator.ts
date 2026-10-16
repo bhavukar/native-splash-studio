@@ -128,6 +128,48 @@ export function generateIosNative(config: StudioConfig): PlatformExport {
                 rippleOpacity = 0.0
             }
         }`;
+  } else if (config.templateId === 'elastic-morph') {
+    animationLogicSwift = `
+        // Elastic Morph & Snap with damped harmonic oscillation
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.55, blendDuration: 0)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'split-converge') {
+    animationLogicSwift = `
+        // Kinetic Split & Converge with haptic lock
+        withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'glitch-velocity') {
+    animationLogicSwift = `
+        // Glitch Velocity with sharp deceleration
+        withAnimation(.easeOut(duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'radar-sweep') {
+    animationLogicSwift = `
+        // 360-degree Radial Angular Sweep
+        withAnimation(.easeOut(duration: ${durationSec})) {
+            logoOpacity = 1.0
+            logoScale = 1.0
+        }`;
+  } else if (config.templateId === 'depth-parallax') {
+    animationLogicSwift = `
+        // Z-Axis Forward Camera Dolly Push
+        withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
+  } else if (config.templateId === 'minimal-strobe') {
+    animationLogicSwift = `
+        // Minimal Light Slit & Aperture Unveil
+        withAnimation(.easeInOut(duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }`;
   } else {
     // Apple Iris / Minimal
     animationLogicSwift = `

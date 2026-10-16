@@ -352,6 +352,299 @@ export function AnimationCanvas({
           </div>
         );
 
+      case 'elastic-morph':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Elastic Snap Logo */}
+            <motion.div
+              key={`elastic-logo-${replayNonce}`}
+              initial={{ scaleX: 0.1, scaleY: 1.8, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scaleX: 0.1 + scrubProgress * 0.9,
+                      scaleY: Math.max(1, 1.8 - scrubProgress * 0.8),
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      scaleX: [0.1, 1.35, 0.92, 1.0],
+                      scaleY: [1.8, 0.75, 1.06, 1.0],
+                      opacity: [0, 1, 1, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.55, 0.82, 1],
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'split-converge':
+        return (
+          <div className="relative flex items-center justify-center overflow-hidden" style={{ width: logoSize * 1.5, height: logoSize * 1.5 }}>
+            {/* Left Converging Half */}
+            <motion.div
+              key={`converge-left-${replayNonce}`}
+              initial={{ x: -100, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: Math.min(0, -100 + scrubProgress * 100),
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      x: [-100, 4, 0],
+                      opacity: [0, 1, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.75, 1],
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="absolute flex items-center justify-center"
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+                clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)',
+              }}
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+
+            {/* Right Converging Half */}
+            <motion.div
+              key={`converge-right-${replayNonce}`}
+              initial={{ x: 100, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: Math.max(0, 100 - scrubProgress * 100),
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      x: [100, -4, 0],
+                      opacity: [0, 1, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.75, 1],
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="absolute flex items-center justify-center"
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+                clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)',
+              }}
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'glitch-velocity':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Micro-stutter Shadow Displacement */}
+            <motion.div
+              key={`glitch-shadow-${replayNonce}`}
+              initial={{ x: -8, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: scrubProgress > 0.6 ? 0 : -8 + scrubProgress * 12,
+                      opacity: scrubProgress > 0.6 ? 0 : 0.4,
+                    }
+                  : {
+                      x: [-8, 6, -4, 2, 0],
+                      opacity: [0, 0.5, 0.3, 0.1, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.7, ease: 'easeOut' }}
+              className="absolute opacity-40 blur-[1px] pointer-events-none"
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: '#38BDF8',
+              }}
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+
+            {/* Main Logo Decel Lock */}
+            <motion.div
+              key={`glitch-main-${replayNonce}`}
+              initial={{ x: 12, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: scrubProgress > 0.7 ? 0 : (1 - scrubProgress) * 12,
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      x: [12, -6, 4, -2, 0],
+                      opacity: [0, 0.8, 1, 1, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.3, 0.6, 0.8, 1],
+                ease: 'easeOut',
+              }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'radar-sweep':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Sweep Beam Glow */}
+            <motion.div
+              key={`radar-beam-${replayNonce}`}
+              initial={{ rotate: 0, opacity: 0.8 }}
+              animate={
+                scrubProgress !== null
+                  ? { rotate: scrubProgress * 360, opacity: Math.max(0, 0.8 - scrubProgress * 0.8) }
+                  : { rotate: [0, 360], opacity: [0.8, 0] }
+              }
+              transition={{ duration: durationSec, ease: 'linear' }}
+              className="absolute pointer-events-none rounded-full"
+              style={{
+                width: logoSize * 1.6,
+                height: logoSize * 1.6,
+                background: `conic-gradient(from 0deg, transparent 270deg, ${config.accentColor} 360deg)`,
+                opacity: 0.3,
+              }}
+            />
+
+            {/* Logo Masked Reveal */}
+            <motion.div
+              key={`radar-logo-${replayNonce}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={
+                scrubProgress !== null
+                  ? { opacity: Math.min(1, scrubProgress * 1.5), scale: 0.9 + scrubProgress * 0.1 }
+                  : { opacity: [0, 0.7, 1], scale: [0.9, 0.98, 1.0] }
+              }
+              transition={{ duration: durationSec, ease: 'easeOut' }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'depth-parallax':
+        return (
+          <div className="relative flex items-center justify-center [perspective:1000px]">
+            {/* Z-Axis Forward Camera Dolly Push */}
+            <motion.div
+              key={`depth-logo-${replayNonce}`}
+              initial={{ scale: 0.08, opacity: 0, filter: 'blur(10px)' }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.08 + scrubProgress * 0.92,
+                      opacity: Math.min(1, scrubProgress * 2),
+                      filter: `blur(${Math.max(0, 10 - scrubProgress * 12)}px)`,
+                    }
+                  : {
+                      scale: [0.08, 1.08, 1.0],
+                      opacity: [0, 1, 1],
+                      filter: ['blur(10px)', 'blur(0px)', 'blur(0px)'],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.75, 1],
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'minimal-strobe':
+        return (
+          <div className="relative flex items-center justify-center overflow-hidden" style={{ width: logoSize * 1.4, height: logoSize * 1.4 }}>
+            {/* Center Razor Light Slit */}
+            <motion.div
+              key={`strobe-line-${replayNonce}`}
+              initial={{ scaleX: 0, opacity: 1 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scaleX: scrubProgress < 0.4 ? scrubProgress * 2.5 : 1,
+                      opacity: scrubProgress > 0.5 ? 0 : 1,
+                    }
+                  : {
+                      scaleX: [0, 1, 1],
+                      opacity: [1, 1, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.5, times: [0, 0.7, 1], ease: 'easeInOut' }}
+              className="absolute h-[1.5px] inset-x-0 z-20 pointer-events-none"
+              style={{ backgroundColor: config.accentColor }}
+            />
+
+            {/* Aperture Vertical Expansion Logo */}
+            <motion.div
+              key={`strobe-logo-${replayNonce}`}
+              initial={{ clipPath: 'inset(50% 0 50% 0)', opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      clipPath: `inset(${Math.max(0, 50 - scrubProgress * 60)}% 0 ${Math.max(0, 50 - scrubProgress * 60)}% 0)`,
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      clipPath: ['inset(50% 0 50% 0)', 'inset(0% 0 0% 0)'],
+                      opacity: [0, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec * 0.75,
+                delay: durationSec * 0.2,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
       case 'apple-iris':
       default:
         return (

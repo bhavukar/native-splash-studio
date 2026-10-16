@@ -63,8 +63,74 @@ export const ANIMATION_TEMPLATES: AnimationTemplate[] = [
     category: 'Modern',
     defaultDurationMs: 800,
     description:
-      'The brand color radiates as an intense ambient backlight. The icon scales into view through a sharp luminescence flare, locking into crisp perfection with high contrast.',
+      'The brand color radiates as an ambient backlight. The icon scales into view through a sharp luminescence flare, locking into crisp perfection with high contrast.',
     androidInterpolator: '@android:interpolator/accelerate_decelerate',
     iosTimingCurve: 'UIView.animateKeyframes with glowing layer shadowRadius',
+  },
+  {
+    id: 'elastic-morph',
+    name: 'Elastic Morph & Snap',
+    tagline: 'Geometric tension compression snapping into logo geometry',
+    category: 'High Energy',
+    defaultDurationMs: 800,
+    description:
+      'Starts as a compressed geometric mass with elastic tension, then violently snaps outward into the final logo dimensions before settling with damped harmonic oscillation.',
+    androidInterpolator: '@android:interpolator/anticipate_overshoot',
+    iosTimingCurve: 'CASpringAnimation(mass: 1.2, damping: 9, stiffness: 300)',
+  },
+  {
+    id: 'split-converge',
+    name: 'Kinetic Split & Converge',
+    tagline: 'Opposing directional halves converging with haptic lock',
+    category: 'Modern',
+    defaultDurationMs: 750,
+    description:
+      'Symmetric segments slide inward from negative and positive X-offsets at high initial velocity, colliding and merging seamlessly at center origin with a crisp micro-haptic stop.',
+    androidInterpolator: '@android:interpolator/decelerate_quint',
+    iosTimingCurve: 'UIViewPropertyAnimator with cubicBezier(0.2, 0.9, 0.1, 1.0)',
+  },
+  {
+    id: 'glitch-velocity',
+    name: 'Glitch Velocity & Decel',
+    tagline: 'Cyberpunk horizontal micro-displacements locking to solid',
+    category: 'Modern',
+    defaultDurationMs: 650,
+    description:
+      'Rapid 3-phase horizontal micro-stutter with chromatic aberration displacement that abruptly decelerates into a rock-solid, crisp vector mark.',
+    androidInterpolator: '@android:interpolator/linear_out_slow_in',
+    iosTimingCurve: 'CAKeyframeAnimation(keyPath: "transform.translation.x")',
+  },
+  {
+    id: 'radar-sweep',
+    name: 'Radial Sweep & Reveal',
+    tagline: '360-degree rotational angular radar reveal',
+    category: 'Minimal',
+    defaultDurationMs: 900,
+    description:
+      'A continuous 360-degree radial beam unmasks the logo geometry like a precision scanner radar, locking into full opacity on final pass.',
+    androidInterpolator: '@android:interpolator/fast_out_linear_in',
+    iosTimingCurve: 'CABasicAnimation(keyPath: "transform.rotation.z")',
+  },
+  {
+    id: 'depth-parallax',
+    name: 'Depth Parallax Dolly',
+    tagline: 'Deep-space Z-axis push with camera inertia',
+    category: 'Luxury',
+    defaultDurationMs: 950,
+    description:
+      'Logo begins in deep 3D background space with optical depth-of-field, accelerating forward on the Z-axis toward the camera lens before braking smoothly into place.',
+    androidInterpolator: '@android:interpolator/decelerate_quad',
+    iosTimingCurve: 'CATransform3DScale + CATransform3DTranslate',
+  },
+  {
+    id: 'minimal-strobe',
+    name: 'Minimal Line Aperture',
+    tagline: 'Horizontal light slit expanding into vertical silhouette',
+    category: 'Minimal',
+    defaultDurationMs: 700,
+    description:
+      'A razor-thin horizontal light beam flashes across the center equator, then snaps vertically open like an optical shutter to unveil the silhouette.',
+    androidInterpolator: '@android:interpolator/fast_out_slow_in',
+    iosTimingCurve: 'UIViewPropertyAnimator(duration: 0.7, curve: .easeInOut)',
   },
 ];

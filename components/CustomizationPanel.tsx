@@ -93,32 +93,41 @@ export function CustomizationPanel({
         </div>
 
         {/* Sample Assets */}
-        <div className="grid grid-cols-3 gap-1.5 pt-1">
-          {SAMPLE_LOGOS.map((sample) => {
-            const isSelected = config.logoName === sample.name;
-            return (
-              <button
-                key={sample.id}
-                onClick={() =>
-                  onChange({
-                    logoSvg: sample.svg,
-                    logoName: sample.name,
-                  })
-                }
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md border text-left transition ${
-                  isSelected
-                    ? 'bg-zinc-800 border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
-                    : 'bg-[var(--surface-subtle)] border-[var(--surface-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-zinc-500/50'
-                }`}
-              >
-                <div
-                  className="w-3.5 h-3.5 flex-shrink-0"
-                  dangerouslySetInnerHTML={{ __html: sample.svg }}
-                />
-                <span className="text-[11px] truncate">{sample.name}</span>
-              </button>
-            );
-          })}
+        <div className="pt-1">
+          <div className="flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)] mb-1.5">
+            <span>Built-in Vector Marks ({SAMPLE_LOGOS.length})</span>
+            <span>Vector SVG</span>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-56 overflow-y-auto pr-1">
+            {SAMPLE_LOGOS.map((sample) => {
+              const isSelected = config.logoName === sample.name;
+              return (
+                <button
+                  key={sample.id}
+                  onClick={() =>
+                    onChange({
+                      logoSvg: sample.svg,
+                      logoName: sample.name,
+                    })
+                  }
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md border text-left transition ${
+                    isSelected
+                      ? 'bg-zinc-800 border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                      : 'bg-[var(--surface-subtle)] border-[var(--surface-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-zinc-500/50'
+                  }`}
+                >
+                  <div
+                    className="w-3.5 h-3.5 flex-shrink-0"
+                    dangerouslySetInnerHTML={{ __html: sample.svg }}
+                  />
+                  <div className="truncate">
+                    <span className="text-[11px] block truncate">{sample.name}</span>
+                    <span className="text-[9px] font-mono text-[var(--text-muted)] block truncate">{sample.category}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
