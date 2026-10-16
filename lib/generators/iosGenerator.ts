@@ -229,6 +229,7 @@ export function generateIosNative(config: StudioConfig): PlatformExport {
 public struct NativeSplashScreenView<Content: View>: View {
     @ViewBuilder let content: () -> Content
     
+    @Environment(\.colorScheme) private var colorScheme
     @State private var isSplashFinished: Bool = false
     @State private var logoScale: CGFloat = ${config.templateId === 'apple-iris' ? '0.85' : '0.35'}
     @State private var logoOpacity: Double = 0.0
@@ -242,8 +243,16 @@ public struct NativeSplashScreenView<Content: View>: View {
     @State private var rippleOpacity: Double = 0.9
 
     private let splashDuration: Double = ${durationSec}
-    private let backgroundColor = Color(red: ${r.toFixed(3)}, green: ${g.toFixed(3)}, blue: ${b.toFixed(3)})
-    private let accentColor = Color(hex: "${accentColor}")
+    private let dayBgColor = Color(red: ${r.toFixed(3)}, green: ${g.toFixed(3)}, blue: ${b.toFixed(3)})
+    private let dayAccentColor = Color(hex: "${accentColor}")
+
+    private var activeBgColor: Color {
+        colorScheme == .dark ? Color(hex: "#090A0F") : dayBgColor
+    }
+
+    private var activeAccentColor: Color {
+        colorScheme == .dark ? Color(hex: "#EDEDED") : dayAccentColor
+    }
 
     public init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content
@@ -257,12 +266,12 @@ public struct NativeSplashScreenView<Content: View>: View {
             // Native Splash Overlay
             if !isSplashFinished {
                 ZStack {
-                    backgroundColor
+                    activeBgColor
                         .ignoresSafeArea()
 
                     // Ambient Bloom / Ripple Wave
                     Circle()
-                        .fill(accentColor.opacity(0.35))
+                        .fill(activeAccentColor.opacity(0.35))
                         .frame(width: 140, height: 140)
                         .scaleEffect(bloomScale)
                         .opacity(bloomOpacity)
@@ -272,7 +281,7 @@ public struct NativeSplashScreenView<Content: View>: View {
                     Image("LaunchLogo")
                         .resizable()
                         .renderingMode(.template)
-                        .foregroundColor(accentColor)
+                        .foregroundColor(activeAccentColor)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 120, height: 120)
                         .scaleEffect(logoScale)

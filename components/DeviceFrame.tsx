@@ -3,7 +3,8 @@
 import React from 'react';
 import { StudioConfig } from '../lib/types';
 import { AnimationCanvas } from './AnimationCanvas';
-import { RotateCcw } from 'lucide-react';
+import { isColorLight, getAdaptiveThemeColors } from '../lib/colors';
+import { Sun, Moon, RotateCcw } from 'lucide-react';
 
 interface DeviceFrameProps {
   config: StudioConfig;
@@ -26,8 +27,19 @@ export function DeviceFrame({
   scrubProgress,
   onScrubChange,
 }: DeviceFrameProps) {
-  const isDark = config.themeMode === 'dark';
+  const isBgLight = isColorLight(config.backgroundColor);
+  const isDark = !isBgLight;
   const isIphone = config.device === 'iphone';
+
+  const handleToggleOsMode = () => {
+    const nextMode = isDark ? 'light' : 'dark';
+    const nextColors = getAdaptiveThemeColors(nextMode, config.accentColor);
+    onConfigChange({
+      themeMode: nextMode,
+      backgroundColor: nextColors.backgroundColor,
+      accentColor: nextColors.accentColor,
+    });
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -59,16 +71,12 @@ export function DeviceFrame({
 
         {/* Mock Device Theme Mode */}
         <button
-          onClick={() =>
-            onConfigChange({
-              themeMode: isDark ? 'light' : 'dark',
-              backgroundColor: isDark ? '#FFFFFF' : '#0B0B0E',
-            })
-          }
-          className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2.5 py-1 rounded-md bg-[var(--surface-subtle)] border border-[var(--surface-border)] hover:bg-[var(--button-hover)] transition"
-          title="Toggle preview OS mode (Light/Dark)"
+          onClick={handleToggleOsMode}
+          className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] px-2.5 py-1 rounded-md bg-[var(--surface-subtle)] border border-[var(--surface-border)] hover:bg-[var(--button-hover)] transition"
+          title="Toggle preview OS mode (Light/Dark) - Adapts logo and background synchronously"
         >
-          OS: {isDark ? 'Dark' : 'Light'}
+          {isDark ? <Moon size={12} className="text-zinc-400" /> : <Sun size={12} className="text-amber-500" />}
+          <span>OS: {isDark ? 'Dark' : 'Light'}</span>
         </button>
 
         {/* Handoff Preview */}
@@ -96,7 +104,13 @@ export function DeviceFrame({
             <div className="relative w-full h-full rounded-[40px] overflow-hidden bg-black flex flex-col">
               {/* iOS Status Bar */}
               <div className="absolute top-0 inset-x-0 h-10 z-40 flex items-center justify-between px-6 pt-1 pointer-events-none">
-                <span className="text-[12px] font-semibold text-zinc-400">9:41</span>
+                <span
+                  className={`text-[12px] font-semibold transition-colors duration-200 ${
+                    isBgLight ? 'text-zinc-900' : 'text-zinc-300'
+                  }`}
+                >
+                  9:41
+                </span>
 
                 {/* Dynamic Island */}
                 <div className="absolute left-1/2 -translate-x-1/2 top-2 w-[84px] h-[22px] bg-black rounded-full flex items-center justify-between px-2">
@@ -104,10 +118,22 @@ export function DeviceFrame({
                   <div className="w-1.5 h-1.5 rounded-full bg-[#111]" />
                 </div>
 
-                <div className="flex items-center gap-1.5 text-zinc-400">
+                <div
+                  className={`flex items-center gap-1.5 transition-colors duration-200 ${
+                    isBgLight ? 'text-zinc-900' : 'text-zinc-300'
+                  }`}
+                >
                   <span className="text-[10px] font-mono">5G</span>
-                  <div className="w-4 h-2 rounded-[3px] border border-zinc-500 p-[1px]">
-                    <div className="w-full h-full bg-zinc-400 rounded-[1px]" />
+                  <div
+                    className={`w-4 h-2 rounded-[3px] border p-[1px] ${
+                      isBgLight ? 'border-zinc-800' : 'border-zinc-500'
+                    }`}
+                  >
+                    <div
+                      className={`w-full h-full rounded-[1px] ${
+                        isBgLight ? 'bg-zinc-900' : 'bg-zinc-300'
+                      }`}
+                    />
                   </div>
                 </div>
               </div>
@@ -124,7 +150,11 @@ export function DeviceFrame({
 
               {/* iOS Home Indicator */}
               <div className="absolute bottom-1 inset-x-0 flex justify-center pointer-events-none z-40">
-                <div className="w-28 h-1 bg-white/30 rounded-full" />
+                <div
+                  className={`w-28 h-1 rounded-full transition-colors duration-200 ${
+                    isBgLight ? 'bg-black/35' : 'bg-white/35'
+                  }`}
+                />
               </div>
             </div>
           </div>
@@ -134,9 +164,21 @@ export function DeviceFrame({
             <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black flex flex-col">
               {/* Android Status Bar */}
               <div className="absolute top-0 inset-x-0 h-9 z-40 flex items-center justify-between px-5 pt-1 pointer-events-none">
-                <span className="text-[11px] font-mono text-zinc-400">09:41</span>
+                <span
+                  className={`text-[11px] font-mono transition-colors duration-200 ${
+                    isBgLight ? 'text-zinc-900' : 'text-zinc-400'
+                  }`}
+                >
+                  09:41
+                </span>
                 <div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-3 h-3 rounded-full bg-[#0a0a0d] border border-white/10" />
-                <span className="text-[10px] font-mono text-zinc-400">100%</span>
+                <span
+                  className={`text-[10px] font-mono transition-colors duration-200 ${
+                    isBgLight ? 'text-zinc-900' : 'text-zinc-400'
+                  }`}
+                >
+                  100%
+                </span>
               </div>
 
               {/* Viewport */}
@@ -151,7 +193,11 @@ export function DeviceFrame({
 
               {/* Android Gesture Bar */}
               <div className="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none z-40">
-                <div className="w-18 h-1 bg-white/40 rounded-full" />
+                <div
+                  className={`w-18 h-1 rounded-full transition-colors duration-200 ${
+                    isBgLight ? 'bg-black/35' : 'bg-white/35'
+                  }`}
+                />
               </div>
             </div>
           </div>

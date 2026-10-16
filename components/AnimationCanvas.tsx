@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StudioConfig } from '../lib/types';
+import { isColorLight, getEffectiveLogoColor, prepareAdaptiveSvg } from '../lib/colors';
 
 interface AnimationCanvasProps {
   config: StudioConfig;
@@ -52,6 +53,10 @@ export function AnimationCanvas({
 
   const durationSec = config.durationMs / 1000;
   const logoSize = 110 * config.logoScale;
+  const isBgLight = isColorLight(config.backgroundColor);
+  const effectiveAccentColor = getEffectiveLogoColor(config.backgroundColor, config.accentColor);
+  const adaptiveSvg = prepareAdaptiveSvg(config.logoSvg, isBgLight);
+  const textColor = isBgLight ? '#09090B' : '#EDEDED';
 
   // Render template-specific animation
   const renderTemplateVisuals = () => {
@@ -82,7 +87,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.5,
                 height: logoSize * 1.5,
-                background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
+                background: `radial-gradient(circle, ${effectiveAccentColor} 0%, transparent 70%)`,
                 filter: 'blur(16px)',
               }}
             />
@@ -113,10 +118,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center drop-shadow-xl"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -138,7 +143,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.5,
                 height: logoSize * 1.5,
-                backgroundColor: config.accentColor,
+                backgroundColor: effectiveAccentColor,
               }}
             />
 
@@ -164,10 +169,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center filter drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -199,13 +204,13 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center overflow-hidden rounded-2xl"
             >
               <div
                 className="w-full h-full flex items-center justify-center"
-                dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+                dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
               />
 
               {/* Diagonal Light Sheen */}
@@ -266,7 +271,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.2,
                 height: logoSize * 1.2,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
             />
 
@@ -297,10 +302,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -331,7 +336,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.8,
                 height: logoSize * 1.8,
-                background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
+                background: `radial-gradient(circle, ${effectiveAccentColor} 0%, transparent 70%)`,
                 filter: 'blur(32px)',
               }}
             />
@@ -361,10 +366,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center drop-shadow-[0_0_20px_currentColor]"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -397,10 +402,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -432,10 +437,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
                 clipPath: 'polygon(0 0, 50% 0, 50% 100%, 0 100%)',
               }}
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
 
             {/* Right Converging Half */}
@@ -462,10 +467,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
                 clipPath: 'polygon(50% 0, 100% 0, 100% 100%, 50% 100%)',
               }}
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -495,7 +500,7 @@ export function AnimationCanvas({
                 height: logoSize,
                 color: '#38BDF8',
               }}
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
 
             {/* Main Logo Decel Lock */}
@@ -521,10 +526,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -546,7 +551,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.6,
                 height: logoSize * 1.6,
-                background: `conic-gradient(from 0deg, transparent 270deg, ${config.accentColor} 360deg)`,
+                background: `conic-gradient(from 0deg, transparent 270deg, ${effectiveAccentColor} 360deg)`,
                 opacity: 0.3,
               }}
             />
@@ -564,10 +569,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -600,10 +605,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -628,7 +633,7 @@ export function AnimationCanvas({
               }
               transition={{ duration: durationSec * 0.5, times: [0, 0.7, 1], ease: 'easeInOut' }}
               className="absolute h-[1.5px] inset-x-0 z-20 pointer-events-none"
-              style={{ backgroundColor: config.accentColor }}
+              style={{ backgroundColor: effectiveAccentColor }}
             />
 
             {/* Aperture Vertical Expansion Logo */}
@@ -654,10 +659,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -685,7 +690,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.5,
                 height: logoSize * 1.5,
-                background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
+                background: `radial-gradient(circle, ${effectiveAccentColor} 0%, transparent 70%)`,
               }}
             />
 
@@ -714,10 +719,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center drop-shadow-2xl"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -745,7 +750,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.8,
                 height: logoSize * 1.8,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
             />
 
@@ -768,10 +773,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -799,7 +804,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.8,
                 height: logoSize * 1.8,
-                backgroundColor: config.accentColor,
+                backgroundColor: effectiveAccentColor,
               }}
             />
 
@@ -824,10 +829,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -856,7 +861,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.6,
                 height: logoSize * 1.6,
-                backgroundColor: config.accentColor,
+                backgroundColor: effectiveAccentColor,
               }}
             />
 
@@ -882,10 +887,10 @@ export function AnimationCanvas({
               style={{
                 width: logoSize,
                 height: logoSize,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center"
-              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
             />
           </div>
         );
@@ -908,9 +913,11 @@ export function AnimationCanvas({
                 : { rotate: [0, 45, 90, 135, 180], scale: [1, 1.1, 1] }
             }
             transition={{ duration: durationSec * 3, ease: 'linear' }}
-            className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-20 blur-3xl pointer-events-none"
+            className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] blur-3xl pointer-events-none"
             style={{
-              background: `radial-gradient(circle at 35% 35%, ${config.accentColor} 0%, transparent 45%), radial-gradient(circle at 65% 65%, #38BDF8 0%, transparent 50%)`,
+              opacity: isBgLight ? 0.14 : 0.22,
+              mixBlendMode: isBgLight ? 'multiply' : 'screen',
+              background: `radial-gradient(circle at 35% 35%, ${effectiveAccentColor} 0%, transparent 45%), radial-gradient(circle at 65% 65%, ${isBgLight ? '#0284C7' : '#38BDF8'} 0%, transparent 50%)`,
             }}
           />
         </div>
@@ -940,8 +947,8 @@ export function AnimationCanvas({
               style={{
                 width: p.size,
                 height: p.size,
-                backgroundColor: config.accentColor,
-                boxShadow: `0 0 6px ${config.accentColor}`,
+                backgroundColor: effectiveAccentColor,
+                boxShadow: `0 0 6px ${effectiveAccentColor}`,
               }}
             />
           ))}
@@ -970,7 +977,7 @@ export function AnimationCanvas({
               style={{
                 width: logoSize * 1.5,
                 height: logoSize * 1.5,
-                color: config.accentColor,
+                color: effectiveAccentColor,
               }}
             />
           ))}
@@ -996,20 +1003,22 @@ export function AnimationCanvas({
             transition={{ duration: durationSec * 0.8, delay: durationSec * 0.15, ease: 'easeInOut' }}
             className="w-[250%] h-10 pointer-events-none"
             style={{
-              background: `linear-gradient(90deg, transparent 0%, ${config.accentColor} 46%, #FFFFFF 50%, ${config.accentColor} 54%, transparent 100%)`,
+              background: isBgLight
+                ? `linear-gradient(90deg, transparent 0%, ${effectiveAccentColor} 46%, #09090B 50%, ${effectiveAccentColor} 54%, transparent 100%)`
+                : `linear-gradient(90deg, transparent 0%, ${effectiveAccentColor} 46%, #FFFFFF 50%, ${effectiveAccentColor} 54%, transparent 100%)`,
               filter: 'blur(3px)',
-              mixBlendMode: 'screen',
+              mixBlendMode: isBgLight ? 'multiply' : 'screen',
             }}
           />
         </div>
       )}
 
       {config.backdropEffect === 'cyber-grid' && (
-        <div className="absolute inset-0 pointer-events-none opacity-15 overflow-hidden">
+        <div className={`absolute inset-0 pointer-events-none overflow-hidden ${isBgLight ? 'opacity-10' : 'opacity-15'}`}>
           <div
             className="w-full h-full"
             style={{
-              backgroundImage: `linear-gradient(to right, ${config.accentColor} 1px, transparent 1px), linear-gradient(to bottom, ${config.accentColor} 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(to right, ${effectiveAccentColor} 1px, transparent 1px), linear-gradient(to bottom, ${effectiveAccentColor} 1px, transparent 1px)`,
               backgroundSize: '24px 24px',
             }}
           />
@@ -1021,8 +1030,8 @@ export function AnimationCanvas({
             transition={{ duration: durationSec, ease: 'linear' }}
             className="absolute inset-x-0 h-[1.5px]"
             style={{
-              background: `linear-gradient(90deg, transparent, ${config.accentColor}, transparent)`,
-              boxShadow: `0 0 8px ${config.accentColor}`,
+              background: `linear-gradient(90deg, transparent, ${effectiveAccentColor}, transparent)`,
+              boxShadow: `0 0 8px ${effectiveAccentColor}`,
             }}
           />
         </div>
@@ -1047,7 +1056,7 @@ export function AnimationCanvas({
 
       {/* ================= 3. Kinetic Typography Layer ================= */}
       {config.appName && config.titleAnimation !== 'none' && (
-        <div className="absolute bottom-16 inset-x-0 flex justify-center z-10 px-4">
+        <div className="absolute bottom-16 inset-x-0 flex justify-center z-10 px-4" style={{ color: textColor }}>
           {config.titleAnimation === 'letter-stagger' ? (
             /* Kinetic Stagger Letter-by-Letter */
             <div className="flex items-center justify-center space-x-[2px]">
@@ -1071,7 +1080,7 @@ export function AnimationCanvas({
                     delay: durationSec * 0.35 + idx * 0.04,
                     ease: 'easeOut',
                   }}
-                  className="text-xs uppercase font-semibold tracking-wider opacity-70"
+                  className="text-xs uppercase font-semibold tracking-wider opacity-85"
                 >
                   {char === ' ' ? '\u00A0' : char}
                 </motion.span>
@@ -1096,7 +1105,7 @@ export function AnimationCanvas({
                 }
                 transition={{ duration: durationSec * 0.5, delay: durationSec * 0.35, ease: [0.16, 1, 0.3, 1] }}
               >
-                <span className="text-xs tracking-[0.25em] uppercase font-semibold opacity-70">
+                <span className="text-xs tracking-[0.25em] uppercase font-semibold opacity-85">
                   {config.appName}
                 </span>
               </motion.div>
@@ -1119,7 +1128,7 @@ export function AnimationCanvas({
               }
               transition={{ duration: durationSec * 0.6, delay: durationSec * 0.25, ease: 'easeOut' }}
             >
-              <span className="text-xs uppercase font-semibold opacity-70">
+              <span className="text-xs uppercase font-semibold opacity-85">
                 {config.appName}
               </span>
             </motion.div>

@@ -3,7 +3,8 @@
 import React, { useRef } from 'react';
 import { StudioConfig } from '../lib/types';
 import { SAMPLE_LOGOS } from '../lib/sampleLogos';
-import { Upload } from 'lucide-react';
+import { isColorLight, getAdaptiveThemeColors } from '../lib/colors';
+import { Upload, Sun, Moon } from 'lucide-react';
 
 interface CustomizationPanelProps {
   config: StudioConfig;
@@ -18,20 +19,55 @@ const BG_PRESETS = [
   { name: 'Pure White', hex: '#FFFFFF' },
 ];
 
-const ACCENT_PRESETS = [
-  { name: 'White', hex: '#FFFFFF' },
-  { name: 'Zinc 300', hex: '#D4D4D8' },
-  { name: 'Cobalt', hex: '#3B82F6' },
-  { name: 'Emerald', hex: '#10B981' },
-  { name: 'Amber', hex: '#F59E0B' },
-  { name: 'Rose', hex: '#F43F5E' },
-];
-
 export function CustomizationPanel({
   config,
   onChange,
 }: CustomizationPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isBgLight = isColorLight(config.backgroundColor);
+
+  const activeAccentPresets = isBgLight
+    ? [
+        { name: 'Pitch Black', hex: '#09090B' },
+        { name: 'Charcoal', hex: '#27272A' },
+        { name: 'Cobalt', hex: '#2563EB' },
+        { name: 'Emerald', hex: '#059669' },
+        { name: 'Amber', hex: '#D97706' },
+        { name: 'Rose', hex: '#E11D48' },
+      ]
+    : [
+        { name: 'White', hex: '#FFFFFF' },
+        { name: 'Zinc 300', hex: '#D4D4D8' },
+        { name: 'Cobalt', hex: '#3B82F6' },
+        { name: 'Emerald', hex: '#10B981' },
+        { name: 'Amber', hex: '#F59E0B' },
+        { name: 'Rose', hex: '#F43F5E' },
+      ];
+
+  const handleSelectBg = (hex: string) => {
+    const isLight = isColorLight(hex);
+    const nextMode = isLight ? 'light' : 'dark';
+    let nextAccent = config.accentColor;
+    if (isLight && isColorLight(config.accentColor)) {
+      nextAccent = '#09090B';
+    } else if (!isLight && !isColorLight(config.accentColor)) {
+      nextAccent = '#EDEDED';
+    }
+    onChange({
+      backgroundColor: hex,
+      themeMode: nextMode,
+      accentColor: nextAccent,
+    });
+  };
+
+  const handleToggleThemeMode = (mode: 'light' | 'dark') => {
+    const next = getAdaptiveThemeColors(mode, config.accentColor);
+    onChange({
+      themeMode: mode,
+      backgroundColor: next.backgroundColor,
+      accentColor: next.accentColor,
+    });
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -131,17 +167,51 @@ export function CustomizationPanel({
         </div>
       </div>
 
-      {/* 2. Colors */}
+      {/* 2. Colors & Device Theme */}
       <div className="space-y-3 pt-3 border-t border-[var(--surface-border)]">
         <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
-          Colors
+          Colors & Theme
         </span>
+
+        {/* Device OS Theme Toggle */}
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-[var(--text-secondary)]">Device Theme</span>
+          <div className="flex items-center bg-[var(--surface-subtle)] p-0.5 rounded-md border border-[var(--surface-border)]">
+            <button
+              onClick={() => handleToggleThemeMode('dark')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition ${
+                !isBgLight
+                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <Moon size={11} className={!isBgLight ? 'text-zinc-200' : 'text-zinc-500'} />
+              <span>Dark</span>
+            </button>
+            <button
+              onClick={() => handleToggleThemeMode('light')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium transition ${
+                isBgLight
+                  ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100 shadow-sm'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <Sun size={11} className={isBgLight ? 'text-amber-400' : 'text-zinc-500'} />
+              <span>Light</span>
+            </button>
+          </div>
+        </div>
 
         {/* Accent Color */}
         <div className="flex items-center justify-between">
-          <span className="text-xs text-[var(--text-secondary)]">Logo Tint</span>
+          <div>
+            <span className="text-xs text-[var(--text-secondary)] block">Logo Tint</span>
+            <span className="text-[9px] font-mono text-[var(--text-muted)]">
+              {isBgLight ? 'High-contrast light mode tints' : 'High-contrast dark mode tints'}
+            </span>
+          </div>
           <div className="flex items-center gap-1.5">
-            {ACCENT_PRESETS.map((c) => (
+            {activeAccentPresets.map((c) => (
               <button
                 key={c.hex}
                 onClick={() => onChange({ accentColor: c.hex })}
@@ -170,7 +240,7 @@ export function CustomizationPanel({
             {BG_PRESETS.map((b) => (
               <button
                 key={b.hex}
-                onClick={() => onChange({ backgroundColor: b.hex })}
+                onClick={() => handleSelectBg(b.hex)}
                 className={`w-4 h-4 rounded-full border border-zinc-700 transition ${
                   config.backgroundColor.toLowerCase() === b.hex.toLowerCase()
                     ? 'ring-2 ring-offset-2 ring-offset-[var(--background)] ring-zinc-500 scale-110'
@@ -183,7 +253,14 @@ export function CustomizationPanel({
             <input
               type="color"
               value={config.backgroundColor}
-              onChange={(e) => onChange({ backgroundColor: e.target.value })}
+              onChange={(e) => {
+                const newBg = e.target.value;
+                const isLight = isColorLight(newBg);
+                onChange({
+                  backgroundColor: newBg,
+                  themeMode: isLight ? 'light' : 'dark',
+                });
+              }}
               className="w-5 h-5 rounded cursor-pointer bg-transparent border-0 ml-1"
             />
           </div>
