@@ -1,0 +1,41 @@
+{
+  "name": "@native-splash/mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) Server for Native Splash Studio — Automated Mobile Splash Screen Injection for Flutter, React Native, Android & iOS",
+  "type": "module",
+  "bin": {
+    "native-splash-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node ./dist/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "splash-screen",
+    "android",
+    "ios",
+    "flutter",
+    "react-native",
+    "animated-vector-drawable",
+    "storyboard"
+  ],
+  "author": "Native Splash Studio",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}
