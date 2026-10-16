@@ -153,15 +153,15 @@ export default function StudioPage() {
 
         {/* Center Stage: Phone Preview (Flex-1) */}
         <main
-          className={`flex-1 h-full relative overflow-hidden flex flex-col items-center justify-between p-3 sm:p-5 bg-zinc-50/70 dark:bg-[#070709] ${
+          className={`flex-1 h-full relative overflow-hidden flex flex-col items-center justify-between p-3 sm:p-5 bg-[#E4E4E8] dark:bg-[#121215] ${
             mobileTab === 'canvas' ? 'flex' : 'hidden lg:flex'
           }`}
           style={{
             backgroundImage:
               pageTheme === 'light'
-                ? 'radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 1px, transparent 1px)'
-                : 'radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1px, transparent 1px)',
-            backgroundSize: '20px 20px',
+                ? 'radial-gradient(circle at center, rgba(0, 0, 0, 0.12) 1px, transparent 1px)'
+                : 'radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
+            backgroundSize: '22px 22px',
           }}
         >
           <DeviceFrame

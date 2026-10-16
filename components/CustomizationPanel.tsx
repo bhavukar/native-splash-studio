@@ -4,7 +4,8 @@ import React, { useState, useRef } from 'react';
 import { StudioConfig, BackdropEffect, TitleAnimation, ExitTransitionEffect } from '../lib/types';
 import { SAMPLE_LOGOS } from '../lib/sampleLogos';
 import { isColorLight, getAdaptiveThemeColors } from '../lib/colors';
-import { Upload, Sun, Moon } from 'lucide-react';
+import { removeBackground } from '../lib/bgRemover';
+import { Upload, Sun, Moon, Wand2 } from 'lucide-react';
 
 interface CustomizationPanelProps {
   config: StudioConfig;
@@ -46,8 +47,27 @@ export function CustomizationPanel({
   onChange,
 }: CustomizationPanelProps) {
   const [activeSection, setActiveSection] = useState<'motion' | 'brand' | 'theme'>('motion');
+  const [isRemovingBg, setIsRemovingBg] = useState(false);
+  const [removeBgStatus, setRemoveBgStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isBgLight = isColorLight(config.backgroundColor);
+
+  const handleRemoveBackground = async (color: string) => {
+    setIsRemovingBg(true);
+    setRemoveBgStatus(null);
+    try {
+      const res = await removeBackground(config.logoSvg, { targetColor: color });
+      if (res.success && res.resultSvg) {
+        onChange({ logoSvg: res.resultSvg });
+        setRemoveBgStatus(res.message || 'Background removed');
+        setTimeout(() => setRemoveBgStatus(null), 3000);
+      }
+    } catch (e: any) {
+      console.error('BG removal failed:', e);
+    } finally {
+      setIsRemovingBg(false);
+    }
+  };
 
   const activeAccentPresets = isBgLight
     ? [
@@ -273,6 +293,40 @@ export function CustomizationPanel({
               />
               <Upload size={13} />
               <span className="text-xs font-medium">Upload SVG or PNG</span>
+            </div>
+
+            {/* Remove Background via Local FFmpeg */}
+            <div className="p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Wand2 size={12} className="text-zinc-600 dark:text-zinc-400" />
+                  <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">Remove Background</span>
+                </div>
+                <span className="text-[10px] font-mono text-zinc-400">FFmpeg</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  disabled={isRemovingBg}
+                  onClick={() => handleRemoveBackground('#FFFFFF')}
+                  className="flex-1 py-1 px-2 rounded-md text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 transition font-medium text-center disabled:opacity-50"
+                >
+                  {isRemovingBg ? 'Working...' : 'Key White BG'}
+                </button>
+                <button
+                  type="button"
+                  disabled={isRemovingBg}
+                  onClick={() => handleRemoveBackground('#000000')}
+                  className="flex-1 py-1 px-2 rounded-md text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 transition font-medium text-center disabled:opacity-50"
+                >
+                  {isRemovingBg ? 'Working...' : 'Key Black BG'}
+                </button>
+              </div>
+              {removeBgStatus && (
+                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">
+                  ✓ {removeBgStatus}
+                </p>
+              )}
             </div>
           </div>
 

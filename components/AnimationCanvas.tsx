@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StudioConfig } from '../lib/types';
 import { isColorLight, getEffectiveLogoColor, prepareAdaptiveSvg } from '../lib/colors';
+import { VectorSvgAnimator } from './VectorSvgAnimator';
 
 interface AnimationCanvasProps {
   config: StudioConfig;
@@ -148,32 +149,25 @@ export function AnimationCanvas({
             />
 
             {/* Path Stroke Draw to Fill */}
-            <motion.div
+            <div
               key={`trace-logo-${replayNonce}`}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={
-                scrubProgress !== null
-                  ? {
-                      opacity: Math.min(1, scrubProgress * 1.4),
-                      scale: 0.92 + scrubProgress * 0.08,
-                    }
-                  : {
-                      opacity: [0, 0.8, 1],
-                      scale: [0.92, 0.98, 1],
-                    }
-              }
-              transition={{
-                duration: durationSec,
-                ease: 'easeInOut',
-              }}
               style={{
                 width: logoSize,
                 height: logoSize,
                 color: effectiveAccentColor,
               }}
               className="relative z-10 flex items-center justify-center filter drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]"
-              dangerouslySetInnerHTML={{ __html: adaptiveSvg }}
-            />
+            >
+              <VectorSvgAnimator
+                svgString={config.logoSvg}
+                accentColor={effectiveAccentColor}
+                durationSec={durationSec}
+                scrubProgress={scrubProgress}
+                replayNonce={replayNonce}
+                templateId="path-trace"
+                isBgLight={isBgLight}
+              />
+            </div>
           </div>
         );
 
