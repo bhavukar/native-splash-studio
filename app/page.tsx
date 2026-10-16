@@ -9,25 +9,23 @@ import { DeviceFrame } from '../components/DeviceFrame';
 import { PresetSelector } from '../components/PresetSelector';
 import { CustomizationPanel } from '../components/CustomizationPanel';
 import { ExportModal } from '../components/ExportModal';
-import { WhyNativeModal } from '../components/WhyNativeModal';
-import { Sparkles, Sliders, Smartphone } from 'lucide-react';
 
 export default function StudioPage() {
   const [config, setConfig] = useState<StudioConfig>({
     templateId: 'spring-bloom',
     device: 'iphone',
-    themeMode: 'dark',
+    themeMode: 'light',
     durationMs: 850,
-    backgroundColor: '#09090B',
-    accentColor: '#EDEDED',
+    backgroundColor: '#FFFFFF',
+    accentColor: '#09090B',
     logoScale: 1.0,
     logoSvg: SAMPLE_LOGOS[0].svg,
     logoName: SAMPLE_LOGOS[0].name,
-    appName: 'Nova App',
-    bundleId: 'com.nova.mobile',
+    appName: 'App',
+    bundleId: 'com.example.app',
     showHomeScreenHandoff: false,
     backdropEffect: 'none',
-    titleAnimation: 'tracking-expand',
+    titleAnimation: 'none',
     exitTransition: 'dissolve',
   });
 
@@ -36,7 +34,7 @@ export default function StudioPage() {
       const saved = localStorage.getItem('native-splash-page-theme') as 'dark' | 'light' | null;
       if (saved === 'light' || saved === 'dark') return saved;
     }
-    return 'dark';
+    return 'light';
   });
 
   const [mobileTab, setMobileTab] = useState<'presets' | 'canvas' | 'inspector'>('canvas');
@@ -44,7 +42,6 @@ export default function StudioPage() {
   const [scrubProgress, setScrubProgress] = useState<number | null>(null);
   const [replayNonce, setReplayNonce] = useState<number>(0);
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false);
-  const [isWhyNativeOpen, setIsWhyNativeOpen] = useState<boolean>(false);
 
   // Synchronize document attributes with page theme
   useEffect(() => {
@@ -97,57 +94,53 @@ export default function StudioPage() {
   }, [handleReplay]);
 
   return (
-    <div className="h-screen w-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans overflow-hidden selection:bg-zinc-700 selection:text-white transition-colors duration-200">
+    <div className="h-screen w-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans overflow-hidden transition-colors duration-150">
       {/* Top Navbar */}
       <Navbar
         pageTheme={pageTheme}
         onToggleTheme={togglePageTheme}
         onOpenExport={() => setIsExportOpen(true)}
-        onOpenInfoModal={() => setIsWhyNativeOpen(true)}
       />
 
       {/* Mobile/Tablet View Selector (< lg) */}
-      <div className="lg:hidden flex items-center justify-around border-b border-[var(--surface-border)] bg-[var(--surface-subtle)] px-2 py-1.5 flex-shrink-0">
+      <div className="lg:hidden flex items-center justify-around border-b border-[var(--surface-border)] bg-[var(--surface-subtle)] px-2 py-1 flex-shrink-0">
         <button
           onClick={() => setMobileTab('presets')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+          className={`px-3 py-1 rounded-md text-xs font-medium transition ${
             mobileTab === 'presets'
-              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
-              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              ? 'bg-white text-zinc-950 dark:bg-zinc-800 dark:text-zinc-100 shadow-xs'
+              : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
           }`}
         >
-          <Sparkles size={12} />
-          <span>Presets</span>
+          Presets
         </button>
         <button
           onClick={() => setMobileTab('canvas')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+          className={`px-3 py-1 rounded-md text-xs font-medium transition ${
             mobileTab === 'canvas'
-              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
-              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              ? 'bg-white text-zinc-950 dark:bg-zinc-800 dark:text-zinc-100 shadow-xs'
+              : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
           }`}
         >
-          <Smartphone size={12} />
-          <span>Canvas</span>
+          Preview
         </button>
         <button
           onClick={() => setMobileTab('inspector')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition ${
+          className={`px-3 py-1 rounded-md text-xs font-medium transition ${
             mobileTab === 'inspector'
-              ? 'bg-zinc-800 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
-              : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+              ? 'bg-white text-zinc-950 dark:bg-zinc-800 dark:text-zinc-100 shadow-xs'
+              : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
           }`}
         >
-          <Sliders size={12} />
-          <span>Inspector</span>
+          Settings
         </button>
       </div>
 
       {/* Main Studio 3-Column Workstation */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel: Motion Preset Library (Width: 320px) */}
+        {/* Left Panel: Presets (Width: 300px) */}
         <aside
-          className={`w-full lg:w-80 flex-shrink-0 border-r border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3.5 flex flex-col z-20 ${
+          className={`w-full lg:w-76 flex-shrink-0 border-r border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3 flex flex-col z-20 ${
             mobileTab === 'presets' ? 'flex' : 'hidden lg:flex'
           }`}
         >
@@ -158,15 +151,17 @@ export default function StudioPage() {
           />
         </aside>
 
-        {/* Center Stage: Studio Canvas Workstation (Flex-1) */}
+        {/* Center Stage: Phone Preview (Flex-1) */}
         <main
-          className={`flex-1 h-full relative overflow-hidden flex flex-col items-center justify-between p-3 sm:p-5 bg-zinc-950/40 dark:bg-[#070709] ${
+          className={`flex-1 h-full relative overflow-hidden flex flex-col items-center justify-between p-3 sm:p-5 bg-zinc-50/70 dark:bg-[#070709] ${
             mobileTab === 'canvas' ? 'flex' : 'hidden lg:flex'
           }`}
           style={{
             backgroundImage:
-              'radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1px, transparent 1px)',
-            backgroundSize: '24px 24px',
+              pageTheme === 'light'
+                ? 'radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 1px, transparent 1px)'
+                : 'radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 1px, transparent 1px)',
+            backgroundSize: '20px 20px',
           }}
         >
           <DeviceFrame
@@ -181,9 +176,9 @@ export default function StudioPage() {
           />
         </main>
 
-        {/* Right Panel: Precision Inspector (Width: 340px) */}
+        {/* Right Panel: Settings (Width: 320px) */}
         <aside
-          className={`w-full lg:w-[340px] flex-shrink-0 border-l border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3.5 flex flex-col z-20 ${
+          className={`w-full lg:w-80 flex-shrink-0 border-l border-[var(--surface-border)] bg-[var(--surface-card)] h-full overflow-hidden p-3 flex flex-col z-20 ${
             mobileTab === 'inspector' ? 'flex' : 'hidden lg:flex'
           }`}
         >
@@ -194,16 +189,11 @@ export default function StudioPage() {
         </aside>
       </div>
 
-      {/* Modals */}
+      {/* Export Modal */}
       <ExportModal
         isOpen={isExportOpen}
         onClose={() => setIsExportOpen(false)}
         config={config}
-      />
-
-      <WhyNativeModal
-        isOpen={isWhyNativeOpen}
-        onClose={() => setIsWhyNativeOpen(false)}
       />
     </div>
   );
