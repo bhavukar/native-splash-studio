@@ -246,6 +246,89 @@ export function CustomizationPanel({
           />
         </div>
       </div>
+
+      {/* 4. Motion Effects & Backdrop */}
+      <div className="space-y-3 pt-3 border-t border-[var(--surface-border)]">
+        <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+          Motion FX & Backdrop
+        </span>
+
+        {/* Backdrop Effect */}
+        <div>
+          <span className="text-xs text-[var(--text-secondary)] block mb-1.5">Screen Backdrop Motion</span>
+          <div className="grid grid-cols-3 gap-1">
+            {[
+              { id: 'none', label: 'Clean Solid' },
+              { id: 'aurora', label: 'Aurora Wave' },
+              { id: 'particles', label: 'Particles' },
+              { id: 'shockwave', label: 'Shockwave' },
+              { id: 'lens-flare', label: 'Lens Flare' },
+              { id: 'cyber-grid', label: 'Cyber Grid' },
+            ].map((eff) => (
+              <button
+                key={eff.id}
+                onClick={() => onChange({ backdropEffect: eff.id as StudioConfig['backdropEffect'] })}
+                className={`px-2 py-1.5 rounded text-[10px] font-mono transition text-center truncate ${
+                  config.backdropEffect === eff.id
+                    ? 'bg-zinc-800 border border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-[var(--surface-subtle)] border border-[var(--surface-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {eff.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Typography Motion */}
+        <div>
+          <span className="text-xs text-[var(--text-secondary)] block mb-1.5">Brand Title Animation</span>
+          <div className="grid grid-cols-2 gap-1">
+            {[
+              { id: 'letter-stagger', label: 'Letter Stagger' },
+              { id: 'tracking-expand', label: 'Tracking Expand' },
+              { id: 'mask-slide', label: 'Mask Slide' },
+              { id: 'none', label: 'Static / Off' },
+            ].map((t) => (
+              <button
+                key={t.id}
+                onClick={() => onChange({ titleAnimation: t.id as StudioConfig['titleAnimation'] })}
+                className={`px-2 py-1.5 rounded text-[10px] font-mono transition text-center truncate ${
+                  config.titleAnimation === t.id
+                    ? 'bg-zinc-800 border border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-[var(--surface-subtle)] border border-[var(--surface-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Exit Transition */}
+        <div>
+          <span className="text-xs text-[var(--text-secondary)] block mb-1.5">App Handoff Exit</span>
+          <div className="grid grid-cols-3 gap-1">
+            {[
+              { id: 'zoom-aperture', label: 'Zoom Aperture' },
+              { id: 'dissolve', label: 'Dissolve' },
+              { id: 'curtain-up', label: 'Curtain Slide' },
+            ].map((ex) => (
+              <button
+                key={ex.id}
+                onClick={() => onChange({ exitTransition: ex.id as StudioConfig['exitTransition'] })}
+                className={`px-2 py-1.5 rounded text-[10px] font-mono transition text-center truncate ${
+                  config.exitTransition === ex.id
+                    ? 'bg-zinc-800 border border-zinc-600 text-zinc-100 dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-[var(--surface-subtle)] border border-[var(--surface-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                {ex.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -12,6 +12,23 @@ interface AnimationCanvasProps {
   replayNonce: number;
 }
 
+const PARTICLE_POSITIONS = [
+  { startX: -130, startY: -160, size: 4 },
+  { startX: 120, startY: -150, size: 3 },
+  { startX: -150, startY: 130, size: 5 },
+  { startX: 140, startY: 150, size: 4 },
+  { startX: 0, startY: -190, size: 3 },
+  { startX: 0, startY: 190, size: 4 },
+  { startX: -170, startY: 0, size: 3 },
+  { startX: 170, startY: 0, size: 4 },
+  { startX: -90, startY: -90, size: 5 },
+  { startX: 90, startY: -100, size: 3 },
+  { startX: -80, startY: 80, size: 4 },
+  { startX: 100, startY: 70, size: 3 },
+  { startX: -50, startY: -130, size: 4 },
+  { startX: 60, startY: 120, size: 4 },
+];
+
 export function AnimationCanvas({
   config,
   isPlaying,
@@ -645,6 +662,176 @@ export function AnimationCanvas({
           </div>
         );
 
+      case 'cosmic-burst':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Ambient Energy Flare */}
+            <motion.div
+              key={`cosmic-flare-${replayNonce}`}
+              initial={{ scale: 0.1, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.1 + scrubProgress * 2.5,
+                      opacity: Math.sin(scrubProgress * Math.PI) * 0.7,
+                    }
+                  : {
+                      scale: [0.1, 1.8, 2.5],
+                      opacity: [0, 0.7, 0],
+                    }
+              }
+              transition={{ duration: durationSec, ease: 'easeOut' }}
+              className="absolute rounded-full pointer-events-none blur-xl"
+              style={{
+                width: logoSize * 1.5,
+                height: logoSize * 1.5,
+                background: `radial-gradient(circle, ${config.accentColor} 0%, transparent 70%)`,
+              }}
+            />
+
+            {/* Logo Gravitational Snap */}
+            <motion.div
+              key={`cosmic-logo-${replayNonce}`}
+              initial={{ scale: 0.2, rotate: -45, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: Math.min(1.0, 0.2 + scrubProgress * 1.1),
+                      rotate: Math.min(0, -45 + scrubProgress * 45),
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      scale: [0.2, 1.15, 0.98, 1.0],
+                      rotate: [-45, 5, 0],
+                      opacity: [0, 1, 1, 1],
+                    }
+              }
+              transition={{
+                duration: durationSec,
+                times: [0, 0.6, 0.85, 1],
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center drop-shadow-2xl"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'liquid-aperture':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Aperture Mask Expansion Wave */}
+            <motion.div
+              key={`aperture-wave-${replayNonce}`}
+              initial={{ scale: 0.3, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.3 + scrubProgress * 3.5,
+                      opacity: Math.max(0, 0.5 - scrubProgress * 0.5),
+                    }
+                  : {
+                      scale: [0.3, 1.5, 3.5],
+                      opacity: [0, 0.5, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.9, delay: durationSec * 0.1, ease: 'easeOut' }}
+              className="absolute rounded-full border border-current pointer-events-none"
+              style={{
+                width: logoSize * 1.8,
+                height: logoSize * 1.8,
+                color: config.accentColor,
+              }}
+            />
+
+            {/* Logo Pulse into Aperture */}
+            <motion.div
+              key={`aperture-logo-${replayNonce}`}
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.7 + scrubProgress * 0.3,
+                      opacity: Math.min(1, scrubProgress * 2),
+                    }
+                  : {
+                      scale: [0.7, 1.08, 1.0],
+                      opacity: [0, 1, 1],
+                    }
+              }
+              transition={{ duration: durationSec, times: [0, 0.7, 1], ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
+      case 'aurora-flare':
+        return (
+          <div className="relative flex items-center justify-center">
+            {/* Luminous Core Glow */}
+            <motion.div
+              key={`aurora-core-${replayNonce}`}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.5 + scrubProgress * 1.2,
+                      opacity: Math.sin(scrubProgress * Math.PI) * 0.5,
+                    }
+                  : {
+                      scale: [0.5, 1.4, 1.8],
+                      opacity: [0, 0.5, 0],
+                    }
+              }
+              transition={{ duration: durationSec, ease: 'easeInOut' }}
+              className="absolute rounded-full blur-2xl pointer-events-none"
+              style={{
+                width: logoSize * 1.8,
+                height: logoSize * 1.8,
+                backgroundColor: config.accentColor,
+              }}
+            />
+
+            {/* Aurora Logo Reveal */}
+            <motion.div
+              key={`aurora-logo-${replayNonce}`}
+              initial={{ scale: 0.9, opacity: 0, filter: 'blur(6px)' }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: 0.9 + scrubProgress * 0.1,
+                      opacity: Math.min(1, scrubProgress * 2),
+                      filter: `blur(${Math.max(0, 6 - scrubProgress * 10)}px)`,
+                    }
+                  : {
+                      scale: [0.9, 1.0],
+                      opacity: [0, 1],
+                      filter: ['blur(6px)', 'blur(0px)'],
+                    }
+              }
+              transition={{ duration: durationSec, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                width: logoSize,
+                height: logoSize,
+                color: config.accentColor,
+              }}
+              className="relative z-10 flex items-center justify-center"
+              dangerouslySetInnerHTML={{ __html: config.logoSvg }}
+            />
+          </div>
+        );
+
       case 'apple-iris':
       default:
         return (
@@ -710,38 +897,237 @@ export function AnimationCanvas({
       className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden transition-colors duration-300"
       style={{ backgroundColor: config.backgroundColor }}
     >
-      {/* Native Splash Visuals */}
-      <div className="relative z-10">{renderTemplateVisuals()}</div>
-
-      {/* App Name Subtitle */}
-      {config.appName && (
-        <motion.div
-          key={`appname-${replayNonce}`}
-          initial={{ opacity: 0, y: 8 }}
-          animate={
-            scrubProgress !== null
-              ? {
-                  opacity: Math.max(0, (scrubProgress - 0.4) * 2),
-                  y: Math.max(0, 8 - (scrubProgress - 0.4) * 15),
-                }
-              : {
-                  opacity: [0, 0, 1],
-                  y: [8, 8, 0],
-                }
-          }
-          transition={{
-            duration: durationSec,
-            times: [0, 0.5, 1],
-          }}
-          className="absolute bottom-16 text-center z-10"
-        >
-          <span className="text-xs tracking-[0.25em] uppercase font-semibold opacity-60">
-            {config.appName}
-          </span>
-        </motion.div>
+      {/* ================= 1. Screen-Wide Backdrop FX Layer ================= */}
+      {config.backdropEffect === 'aurora' && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            key={`aurora-bg-${replayNonce}`}
+            animate={
+              scrubProgress !== null
+                ? { rotate: scrubProgress * 60, scale: 1 + scrubProgress * 0.1 }
+                : { rotate: [0, 45, 90, 135, 180], scale: [1, 1.1, 1] }
+            }
+            transition={{ duration: durationSec * 3, ease: 'linear' }}
+            className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-20 blur-3xl pointer-events-none"
+            style={{
+              background: `radial-gradient(circle at 35% 35%, ${config.accentColor} 0%, transparent 45%), radial-gradient(circle at 65% 65%, #38BDF8 0%, transparent 50%)`,
+            }}
+          />
+        </div>
       )}
 
-      {/* Optional Mock Home Screen Handoff (Displays once splash completes) */}
+      {config.backdropEffect === 'particles' && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {PARTICLE_POSITIONS.map((p, i) => (
+            <motion.div
+              key={`part-${i}-${replayNonce}`}
+              initial={{ x: p.startX, y: p.startY, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      x: p.startX * (1 - Math.min(1, scrubProgress * 1.4)),
+                      y: p.startY * (1 - Math.min(1, scrubProgress * 1.4)),
+                      opacity: scrubProgress < 0.75 ? 0.7 : Math.max(0, 1 - (scrubProgress - 0.75) * 4),
+                    }
+                  : {
+                      x: [p.startX, 0],
+                      y: [p.startY, 0],
+                      opacity: [0, 0.8, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.75, ease: 'easeIn' }}
+              className="absolute left-1/2 top-1/2 rounded-full pointer-events-none"
+              style={{
+                width: p.size,
+                height: p.size,
+                backgroundColor: config.accentColor,
+                boxShadow: `0 0 6px ${config.accentColor}`,
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {config.backdropEffect === 'shockwave' && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          {[0, 0.14, 0.28].map((delay, i) => (
+            <motion.div
+              key={`shockwave-ring-${i}-${replayNonce}`}
+              initial={{ scale: 0.1, opacity: 0 }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      scale: Math.max(0.1, (scrubProgress - delay) * 4.5),
+                      opacity: Math.max(0, 0.5 - (scrubProgress - delay) * 0.7),
+                    }
+                  : {
+                      scale: [0.1, 4.0],
+                      opacity: [0, 0.5, 0],
+                    }
+              }
+              transition={{ duration: durationSec * 0.85, delay, ease: 'easeOut' }}
+              className="absolute rounded-full border border-current pointer-events-none"
+              style={{
+                width: logoSize * 1.5,
+                height: logoSize * 1.5,
+                color: config.accentColor,
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {config.backdropEffect === 'lens-flare' && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          <motion.div
+            key={`lens-flare-${replayNonce}`}
+            initial={{ x: '-150%', opacity: 0 }}
+            animate={
+              scrubProgress !== null
+                ? {
+                    x: `${-150 + scrubProgress * 300}%`,
+                    opacity: Math.sin(scrubProgress * Math.PI) * 0.8,
+                  }
+                : {
+                    x: ['-150%', '150%'],
+                    opacity: [0, 0.85, 0],
+                  }
+            }
+            transition={{ duration: durationSec * 0.8, delay: durationSec * 0.15, ease: 'easeInOut' }}
+            className="w-[250%] h-10 pointer-events-none"
+            style={{
+              background: `linear-gradient(90deg, transparent 0%, ${config.accentColor} 46%, #FFFFFF 50%, ${config.accentColor} 54%, transparent 100%)`,
+              filter: 'blur(3px)',
+              mixBlendMode: 'screen',
+            }}
+          />
+        </div>
+      )}
+
+      {config.backdropEffect === 'cyber-grid' && (
+        <div className="absolute inset-0 pointer-events-none opacity-15 overflow-hidden">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${config.accentColor} 1px, transparent 1px), linear-gradient(to bottom, ${config.accentColor} 1px, transparent 1px)`,
+              backgroundSize: '24px 24px',
+            }}
+          />
+          {/* Laser Scanning Bar */}
+          <motion.div
+            key={`laser-scan-${replayNonce}`}
+            initial={{ y: 0 }}
+            animate={scrubProgress !== null ? { y: scrubProgress * 660 } : { y: [0, 660] }}
+            transition={{ duration: durationSec, ease: 'linear' }}
+            className="absolute inset-x-0 h-[1.5px]"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${config.accentColor}, transparent)`,
+              boxShadow: `0 0 8px ${config.accentColor}`,
+            }}
+          />
+        </div>
+      )}
+
+      {/* ================= 2. Native Splash Logo Visuals ================= */}
+      <motion.div
+        animate={
+          animationFinished && config.showHomeScreenHandoff
+            ? config.exitTransition === 'zoom-aperture'
+              ? { scale: 35, opacity: 0 }
+              : config.exitTransition === 'curtain-up'
+              ? { y: -600, opacity: 0 }
+              : { opacity: 0 }
+            : { scale: 1, y: 0, opacity: 1 }
+        }
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10"
+      >
+        {renderTemplateVisuals()}
+      </motion.div>
+
+      {/* ================= 3. Kinetic Typography Layer ================= */}
+      {config.appName && config.titleAnimation !== 'none' && (
+        <div className="absolute bottom-16 inset-x-0 flex justify-center z-10 px-4">
+          {config.titleAnimation === 'letter-stagger' ? (
+            /* Kinetic Stagger Letter-by-Letter */
+            <div className="flex items-center justify-center space-x-[2px]">
+              {config.appName.split('').map((char, idx) => (
+                <motion.span
+                  key={`char-${idx}-${replayNonce}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={
+                    scrubProgress !== null
+                      ? {
+                          opacity: Math.max(0, (scrubProgress - 0.3 - idx * 0.03) * 3),
+                          y: Math.max(0, 12 - (scrubProgress - 0.3 - idx * 0.03) * 25),
+                        }
+                      : {
+                          opacity: [0, 1],
+                          y: [12, 0],
+                        }
+                  }
+                  transition={{
+                    duration: 0.35,
+                    delay: durationSec * 0.35 + idx * 0.04,
+                    ease: 'easeOut',
+                  }}
+                  className="text-xs uppercase font-semibold tracking-wider opacity-70"
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+            </div>
+          ) : config.titleAnimation === 'mask-slide' ? (
+            /* Overflow Mask Slide */
+            <div className="overflow-hidden py-1">
+              <motion.div
+                key={`mask-slide-${replayNonce}`}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={
+                  scrubProgress !== null
+                    ? {
+                        y: `${Math.max(0, 100 - (scrubProgress - 0.3) * 200)}%`,
+                        opacity: Math.max(0, (scrubProgress - 0.3) * 2.5),
+                      }
+                    : {
+                        y: ['100%', '0%'],
+                        opacity: [0, 1],
+                      }
+                }
+                transition={{ duration: durationSec * 0.5, delay: durationSec * 0.35, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span className="text-xs tracking-[0.25em] uppercase font-semibold opacity-70">
+                  {config.appName}
+                </span>
+              </motion.div>
+            </div>
+          ) : (
+            /* Tracking Expansion */
+            <motion.div
+              key={`tracking-${replayNonce}`}
+              initial={{ opacity: 0, letterSpacing: '0.05em' }}
+              animate={
+                scrubProgress !== null
+                  ? {
+                      opacity: Math.max(0, (scrubProgress - 0.3) * 2),
+                      letterSpacing: `${0.05 + Math.min(0.25, (scrubProgress - 0.3) * 0.35)}em`,
+                    }
+                  : {
+                      opacity: [0, 1],
+                      letterSpacing: ['0.05em', '0.25em'],
+                    }
+              }
+              transition={{ duration: durationSec * 0.6, delay: durationSec * 0.25, ease: 'easeOut' }}
+            >
+              <span className="text-xs uppercase font-semibold opacity-70">
+                {config.appName}
+              </span>
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {/* ================= 4. App Screen Handoff ================= */}
       <AnimatePresence>
         {config.showHomeScreenHandoff && animationFinished && scrubProgress === null && (
           <motion.div

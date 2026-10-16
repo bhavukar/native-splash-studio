@@ -2,6 +2,25 @@ export type DeviceType = 'iphone' | 'pixel';
 export type ThemeMode = 'dark' | 'light';
 export type PlatformType = 'android' | 'ios' | 'flutter' | 'react-native';
 
+export type BackdropEffect =
+  | 'none'
+  | 'aurora'
+  | 'particles'
+  | 'shockwave'
+  | 'lens-flare'
+  | 'cyber-grid';
+
+export type TitleAnimation =
+  | 'none'
+  | 'letter-stagger'
+  | 'tracking-expand'
+  | 'mask-slide';
+
+export type ExitTransitionEffect =
+  | 'dissolve'
+  | 'zoom-aperture'
+  | 'curtain-up';
+
 export type AnimationTemplateId =
   | 'spring-bloom'
   | 'path-trace'
@@ -14,7 +33,10 @@ export type AnimationTemplateId =
   | 'glitch-velocity'
   | 'radar-sweep'
   | 'depth-parallax'
-  | 'minimal-strobe';
+  | 'minimal-strobe'
+  | 'cosmic-burst'
+  | 'liquid-aperture'
+  | 'aurora-flare';
 
 export interface AnimationTemplate {
   id: AnimationTemplateId;
@@ -25,6 +47,9 @@ export interface AnimationTemplate {
   description: string;
   androidInterpolator: string;
   iosTimingCurve: string;
+  defaultBackdrop?: BackdropEffect;
+  defaultTitleAnim?: TitleAnimation;
+  defaultExit?: ExitTransitionEffect;
 }
 
 export interface StudioConfig {
@@ -40,6 +65,9 @@ export interface StudioConfig {
   appName: string;
   bundleId: string;
   showHomeScreenHandoff: boolean;
+  backdropEffect: BackdropEffect;
+  titleAnimation: TitleAnimation;
+  exitTransition: ExitTransitionEffect;
 }
 
 export interface GeneratedFile {

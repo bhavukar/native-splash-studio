@@ -170,6 +170,38 @@ export function generateIosNative(config: StudioConfig): PlatformExport {
             logoScale = 1.0
             logoOpacity = 1.0
         }`;
+  } else if (config.templateId === 'cosmic-burst') {
+    animationLogicSwift = `
+        // Cosmic Burst with Overshoot Pop
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }
+        withAnimation(.easeOut(duration: 0.75)) {
+            bloomScale = 3.2
+            bloomOpacity = 0.0
+        }`;
+  } else if (config.templateId === 'liquid-aperture') {
+    animationLogicSwift = `
+        // Liquid Aperture Bloom Expansion
+        withAnimation(.interpolatingSpring(stiffness: 170, damping: 15)) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }
+        withAnimation(.easeOut(duration: 0.65).delay(0.1)) {
+            rippleScale = 2.8
+            rippleOpacity = 0.0
+        }`;
+  } else if (config.templateId === 'aurora-flare') {
+    animationLogicSwift = `
+        // Aurora Flare with Anamorphic Lens Glide
+        withAnimation(.timingCurve(0.16, 1.0, 0.3, 1.0, duration: ${durationSec})) {
+            logoScale = 1.0
+            logoOpacity = 1.0
+        }
+        withAnimation(.linear(duration: 0.75).delay(0.15)) {
+            sheenOffset = 2.0
+        }`;
   } else {
     // Apple Iris / Minimal
     animationLogicSwift = `
@@ -178,6 +210,14 @@ export function generateIosNative(config: StudioConfig): PlatformExport {
             logoScale = 1.0
             logoOpacity = 1.0
         }`;
+  }
+
+  // Swift transition definition
+  let swiftTransition = '.opacity.animation(.easeInOut(duration: 0.35))';
+  if (config.exitTransition === 'zoom-aperture') {
+    swiftTransition = '.asymmetric(insertion: .identity, removal: .scale(scale: 25.0).combined(with: .opacity).animation(.easeIn(duration: 0.42)))';
+  } else if (config.exitTransition === 'curtain-up') {
+    swiftTransition = '.asymmetric(insertion: .identity, removal: .move(edge: .top).combined(with: .opacity).animation(.easeInOut(duration: 0.38)))';
   }
 
   const swiftUiSplashContent = `import SwiftUI
@@ -240,7 +280,7 @@ public struct NativeSplashScreenView<Content: View>: View {
                         .rotation3DEffect(.degrees(rotationY), axis: (x: 0, y: 1, z: 0))
                         .offset(y: config.templateId == "liquid-ripple" ? dropOffsetY : 0)
                 }
-                .transition(.opacity.animation(.easeInOut(duration: 0.35)))
+                .transition(${swiftTransition})
                 .zIndex(999)
             }
         }
@@ -252,9 +292,9 @@ public struct NativeSplashScreenView<Content: View>: View {
     private func startNativeAnimation() {
         ${animationLogicSwift}
 
-        // Seamless exit transition to main app
+        // Seamless exit transition (${config.exitTransition}) to main app
         DispatchQueue.main.asyncAfter(deadline: .now() + splashDuration) {
-            withAnimation(.easeInOut(duration: 0.35)) {
+            withAnimation {
                 isSplashFinished = true
             }
         }

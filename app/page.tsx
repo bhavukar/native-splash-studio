@@ -25,6 +25,9 @@ export default function StudioPage() {
     appName: 'Nova App',
     bundleId: 'com.nova.mobile',
     showHomeScreenHandoff: false,
+    backdropEffect: 'none',
+    titleAnimation: 'tracking-expand',
+    exitTransition: 'dissolve',
   });
 
   const [pageTheme, setPageTheme] = useState<'dark' | 'light'>(() => {
@@ -67,6 +70,9 @@ export default function StudioPage() {
         const found = ANIMATION_TEMPLATES.find((t) => t.id === updates.templateId);
         if (found) {
           next.durationMs = found.defaultDurationMs;
+          if (found.defaultBackdrop) next.backdropEffect = found.defaultBackdrop;
+          if (found.defaultTitleAnim) next.titleAnimation = found.defaultTitleAnim;
+          if (found.defaultExit) next.exitTransition = found.defaultExit;
         }
       }
       return next;
